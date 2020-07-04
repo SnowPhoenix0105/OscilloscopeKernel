@@ -10,7 +10,7 @@ namespace OscilloscopeCore.Wave
 
         int Period { get; }
 
-        double Voltage(int time);
+        double Voltage(double phase);
 
         public static IWave operator +(IWave left, IWave right)
         {
@@ -31,14 +31,14 @@ namespace OscilloscopeCore.Wave
 
         public static double CalculateMeanVoltage(IWave wave, int calculate_times = 1000)
         {
-            WaveRunner runner = new WaveRunner(wave);
-            double delta_time = (double)(wave.Period) / calculate_times;
+            double delta_phase = 1.0 / (double)calculate_times;
             double little_sum = 0;
             double mean = 0;
+            double phase = 0;
             for (int i = 0; i < calculate_times; i++)
             {
-                little_sum += runner.Voltage;
-                runner.TimeAhead(delta_time);
+                little_sum += wave.Voltage(phase);
+                phase += delta_phase;
                 if ((i & 0xf) == 0)
                 {
                     mean += little_sum / calculate_times;
@@ -63,11 +63,16 @@ namespace OscilloscopeCore.Wave
             this.value = voltage;
         }
 
-        public double Voltage(int time) => value;
+        public double Voltage(double phase) => value;
 
         public override string ToString()
         {
             return string.Format("ConstantWave({0})", value);
+        }
+
+        public override int GetHashCode()
+        {
+            return value.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -89,19 +94,28 @@ namespace OscilloscopeCore.Wave
         private IWave wave1;
         private IWave wave2;
         private int period;
+        private int period1;
+        private int period2;
         private double mean_voltage;
 
         public AddWave(IWave wave1, IWave wave2)
         {
             this.wave1 = wave1;
             this.wave2 = wave2;
+            this.period1 = wave1.Period;
+            this.period2 = wave2.Period;
             this.mean_voltage = wave1.MeanVoltage + wave2.MeanVoltage;
             this.period = GetLeastCommonMultiple(wave1.Period, wave2.Period);
         }
 
-        public double Voltage(int time)
+        public double Voltage(double phase)
         {
-            return wave1.Voltage(time) + wave2.Voltage(time);
+            double time = phase * period;
+            double phase1 = time / period1;
+            double phase2 = time / period2;
+            phase1 -= (int)phase1;
+            phase2 -= (int)phase2;
+            return wave1.Voltage(phase1) + wave2.Voltage(phase2);
         }
 
         private static int GetLeastCommonMultiple(int m, int n)

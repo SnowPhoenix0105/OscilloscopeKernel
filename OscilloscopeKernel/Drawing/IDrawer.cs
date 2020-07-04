@@ -7,6 +7,7 @@ namespace OscilloscopeCore.Drawing
 {
     public interface IPointDrawer
     {
+        bool IsThreadSafe { get; }
         int GraphLength { get; }
         int GraphWidth { get; }
         int PointLength { get; set; }

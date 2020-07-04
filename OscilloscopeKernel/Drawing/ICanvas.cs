@@ -10,6 +10,9 @@ namespace OscilloscopeCore.Drawing
 { 
     public interface ICanvas<out T>
     {
+        int Length { get; }
+        int Width { get; }
+
         /// <summary>
         /// get or set a pixel with index
         /// </summary>

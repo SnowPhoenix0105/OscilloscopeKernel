@@ -35,10 +35,8 @@ namespace OscilloscopeCore.Wave
             this.mean_voltage = voltage_times * function_mean;
         }
 
-        public double Voltage(int time)
+        public double Voltage(double phase)
         {
-            double phase = (double)time / (double)period;
-            phase = phase - (int)phase;
             return voltage_times * function(phase);
         }
 
