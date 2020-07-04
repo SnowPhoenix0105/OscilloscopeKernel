@@ -224,8 +224,4 @@ src/CommonAssemblyInfo.cs
 # Unity
 *.meta
 
-# others in Visual Studio
-*.xml
-*.csproj
-*.sln
 
