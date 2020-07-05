@@ -1,13 +1,12 @@
-﻿using OscilloscopeCore.Tools;
+﻿using OscilloscopeKernel.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore.Drawing
+namespace OscilloscopeKernel.Drawing
 {
     public interface IPointDrawer
     {
-        bool IsThreadSafe { get; }
         int GraphLength { get; }
         int GraphWidth { get; }
         int PointLength { get; set; }

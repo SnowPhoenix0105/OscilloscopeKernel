@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore.Tools
+namespace OscilloscopeKernel.Tools
 {
     struct PositionTuple
 	{

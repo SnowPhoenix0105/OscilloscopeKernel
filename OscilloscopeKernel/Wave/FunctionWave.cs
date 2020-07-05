@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore.Wave
+namespace OscilloscopeKernel.Wave
 {
     public class FunctionWave : IWave
     {

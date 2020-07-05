@@ -10,9 +10,9 @@
 //ver2.0.0 on Jan.14/2020
 
 
-using OscilloscopeCore.Wave;
+using OscilloscopeKernel.Wave;
 
-namespace OscilloscopeCore
+namespace OscilloscopeKernel
 {
 
     ///<summary>

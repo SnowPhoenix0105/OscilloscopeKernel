@@ -1,10 +1,10 @@
-﻿using OscilloscopeCore.Drawing;
-using OscilloscopeCore.Tools;
+﻿using OscilloscopeKernel.Drawing;
+using OscilloscopeKernel.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore.Drawing
+namespace OscilloscopeKernel.Drawing
 {
     class Drawer
     {

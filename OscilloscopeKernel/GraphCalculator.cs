@@ -1,9 +1,9 @@
-﻿using OscilloscopeCore.Drawing;
+﻿using OscilloscopeKernel.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore
+namespace OscilloscopeKernel
 {
     class GraphCalculator<T>
     {

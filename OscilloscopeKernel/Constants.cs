@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore
+namespace OscilloscopeKernel
 {
     static class Constants
     {

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Text;
-using OscilloscopeCore.Tools;
+using OscilloscopeKernel.Tools;
 
-namespace OscilloscopeCore.Drawing
+namespace OscilloscopeKernel.Drawing
 { 
     public interface ICanvas<out T>
     {

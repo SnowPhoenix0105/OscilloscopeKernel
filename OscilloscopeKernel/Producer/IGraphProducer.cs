@@ -1,14 +1,13 @@
-﻿using OscilloscopeCore.Drawing;
-using OscilloscopeCore.Wave;
+﻿using OscilloscopeKernel.Drawing;
+using OscilloscopeKernel.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscilloscopeCore.Producer
+namespace OscilloscopeKernel.Producer
 {
     public interface IGraphProducer
     {
-        bool RequireThreadSafeDrawer { get; }
         int GraphLength { get; }
         int GraphWidth { get; }
         T Produce<T>(
