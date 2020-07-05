@@ -28,12 +28,14 @@ namespace OscilloscopeKernel
         private IPointDrawer point_drawer;
         private IRulerDrawer ruler_drawer;
         private IGraphProducer graph_producer;
+        private IControlPanel control_panel;
 
         protected SingleThreadOscilloscope(
             ICanvas<T> canvas, 
             IPointDrawer point_drawer, 
             IRulerDrawer ruler_drawer,
-            IGraphProducer graph_producer)
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
         {
             if (canvas.GraphSize != point_drawer.GraphSize || canvas.GraphSize != ruler_drawer.GraphSize)
             {
@@ -43,6 +45,7 @@ namespace OscilloscopeKernel
             this.point_drawer = point_drawer;
             this.ruler_drawer = ruler_drawer;
             this.graph_producer = graph_producer;
+            this.control_panel = control_panel;
         }
 
         protected T Draw(double delta_time)
@@ -52,8 +55,7 @@ namespace OscilloscopeKernel
                 canvas: canvas,
                 point_drawer: point_drawer,
                 ruler_drawer: ruler_drawer,
-                x_wave: XFixer.GetStateShot(),
-                y_wave: YFixer.GetStateShot());
+                information: control_panel.GetStateShot());
         }
     }
 
@@ -63,8 +65,9 @@ namespace OscilloscopeKernel
             ICanvas<T> canvas,
             IPointDrawer point_drawer,
             IRulerDrawer ruler_drawer,
-            IGraphProducer graph_producer)
-            : base(canvas, point_drawer, ruler_drawer, graph_producer) { }
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
+            : base(canvas, point_drawer, ruler_drawer, graph_producer, control_panel) { }
 
         public new T Draw(double delta_time)
         {
@@ -80,8 +83,9 @@ namespace OscilloscopeKernel
             ICanvas<T> canvas,
             IPointDrawer point_drawer,
             IRulerDrawer ruler_drawer,
-            IGraphProducer graph_producer)
-            : base(canvas, point_drawer, ruler_drawer, graph_producer) { }
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
+            : base(canvas, point_drawer, ruler_drawer, graph_producer, control_panel) { }
 
         public T Draw()
         {

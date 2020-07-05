@@ -18,6 +18,7 @@ namespace OscilloscopeKernel
 
         private IRulerDrawer ruler_drawer;
         private IGraphProducer graph_producer;
+        private IControlPanel control_panel;
         private ConcurrentQueue<T> buffer;
 
         private ConstructorTuple<ICanvas<T>> canvas_constructor;
@@ -31,8 +32,8 @@ namespace OscilloscopeKernel
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
-            ConcurrentQueue<T> buffer = null,
-            int buffer_max = 20)
+            IControlPanel control_panel,
+            ConcurrentQueue<T> buffer = null)
         {
             ICanvas<T> canvas = canvas_constructor.NewInstance();
             IPointDrawer point_drawer = point_drawer_constructor.NewInstance();
@@ -44,6 +45,7 @@ namespace OscilloscopeKernel
             this.point_drawer_constructor = point_drawer_constructor;
             this.ruler_drawer = ruler_drawer;
             this.graph_producer = graph_producer;
+            this.control_panel = control_panel;
             if (buffer == null)
             {
                 this.buffer = new ConcurrentQueue<T>();
@@ -73,8 +75,7 @@ namespace OscilloscopeKernel
                 canvas: canvas,
                 point_drawer: point_drawer,
                 ruler_drawer: ruler_drawer,
-                x_wave: XFixer.GetStateShot(),
-                y_wave: YFixer.GetStateShot());
+                information: control_panel.GetStateShot());
             buffer.Enqueue(new_graph);
             free_canvas.Enqueue(canvas);
             free_point_drawer.Enqueue(point_drawer);
@@ -88,14 +89,15 @@ namespace OscilloscopeKernel
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
-            ConcurrentQueue<T> buffer = null,
-            int buffer_max = 20)
-            : base(canvas_constructor, 
-                  point_drawer_constructor, 
-                  ruler_drawer, 
-                  graph_producer,
-                  buffer,
-                  buffer_max)
+            IControlPanel control_panel,
+            ConcurrentQueue<T> buffer = null)
+            : base(
+                  canvas_constructor: canvas_constructor,
+                  point_drawer_constructor: point_drawer_constructor,
+                  ruler_drawer: ruler_drawer, 
+                  graph_producer: graph_producer,
+                  control_panel: control_panel,
+                  buffer: buffer)
         { }
 
         public new void Draw(double delta_time)
@@ -113,14 +115,15 @@ namespace OscilloscopeKernel
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
-            ConcurrentQueue<T> buffer = null,
-            int buffer_max = 20)
-            : base(canvas_constructor, 
-                  point_drawer_constructor, 
-                  ruler_drawer, 
-                  graph_producer, 
-                  buffer,
-                  buffer_max)
+            IControlPanel control_panel,
+            ConcurrentQueue<T> buffer = null)
+            : base(
+                  canvas_constructor: canvas_constructor,
+                  point_drawer_constructor: point_drawer_constructor,
+                  ruler_drawer: ruler_drawer,
+                  graph_producer: graph_producer,
+                  control_panel: control_panel,
+                  buffer: buffer)
         { }
 
         public void Start(int delta_time)
