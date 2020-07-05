@@ -223,3 +223,6 @@ src/CommonAssemblyInfo.cs
 
 # Unity
 *.meta
+
+# others
+count.bat
