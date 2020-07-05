@@ -13,11 +13,11 @@ namespace OscilloscopeKernel.Drawing
         public ref SizeStruct GraphSize => ref graph_size;
 
         private SizeStruct graph_size;
-        private SizeStruct old_point_size;
+        private SizeStruct old_point_size = new SizeStruct(0, 0);
         private readonly int max_x;
         private readonly int max_y;
         private CachedPositonPool position_pool;
-        private ConcurrentDictionary<IPosition> positions = new ConcurrentDictionary<IPosition>();
+        private ConcurrentDictionary<IPosition, byte> positions = new ConcurrentDictionary<IPosition, byte>();
         private readonly LinkedList<Position> offsets = new LinkedList<Position>();
 
         public ConcurrentDrawer(int length, int width)
@@ -32,9 +32,9 @@ namespace OscilloscopeKernel.Drawing
         {
             if (Math.Abs(position.X) <= max_x && Math.Abs(position.Y) <= max_y)
             {
-                if (!positions.Contains(position))
+                if (!positions.ContainsKey(position))
                 {
-                    positions.Add(position_pool.AllocPosition(position.X, position.Y));
+                    positions.TryAdd(position_pool.AllocPosition(position.X, position.Y), 0);
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace OscilloscopeKernel.Drawing
                 this.old_point_size = point_size;
                 this.FreshOffsets(offsets, point_size);
             }
-            foreach (Position center in positions)
+            foreach (Position center in positions.Keys)
             {
                 foreach (Position offset in offsets)
                 {
