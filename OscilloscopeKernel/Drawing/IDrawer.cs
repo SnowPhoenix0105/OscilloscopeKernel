@@ -7,18 +7,14 @@ namespace OscilloscopeKernel.Drawing
 {
     public interface IPointDrawer
     {
-        int GraphLength { get; }
-        int GraphWidth { get; }
-        int PointLength { get; set; }
-        int PointWidth { get; set; }
-        void SetPoint(int x, int y);
-        void DrawAllPoint<T>(ICanvas<T> canvas, ColorTuple color);
+        ref SizeStruct GraphSize { get; }
+        void SetPoint(in PositionStruct position);
+        void DrawAllPoint<T>(ICanvas<T> canvas, ColorStruct color, in SizeStruct point_size);
     }
 
     public interface IRulerDrawer
     {
-        int GraphLength { get; }
-        int GraphWidth { get; }
+        ref SizeStruct GraphSize { get; }
         void Draw<T>(ICanvas<T> canvas);
     }
 }

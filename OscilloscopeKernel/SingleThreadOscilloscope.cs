@@ -35,13 +35,9 @@ namespace OscilloscopeKernel
             IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer)
         {
-            if (canvas.Length != point_drawer.GraphLength || canvas.Length != ruler_drawer.GraphLength)
+            if (canvas.GraphSize != point_drawer.GraphSize || canvas.GraphSize != ruler_drawer.GraphSize)
             {
-                throw new OscillocopeBuildException("canvas.Length, point_drawer.GraphLength, ruler_drawer.GraphLenth are not the same");
-            }
-            if (canvas.Width != point_drawer.GraphWidth || canvas.Width != ruler_drawer.GraphWidth)
-            {
-                throw new OscillocopeBuildException("canvas.Width, point_drawer.GraphWidth, ruler_drawer.GraphWidth are not the same");
+                throw new OscillocopeBuildException("canvas, point_drawer, ruler_drawer have different GraphSize");
             }
             this.canvas = canvas;
             this.point_drawer = point_drawer;
@@ -56,8 +52,8 @@ namespace OscilloscopeKernel
                 canvas: canvas,
                 point_drawer: point_drawer,
                 ruler_drawer: ruler_drawer,
-                x_wave: XFixer.GetCut(),
-                y_wave: YFixer.GetCut());
+                x_wave: XFixer.GetStateShot(),
+                y_wave: YFixer.GetStateShot());
         }
     }
 

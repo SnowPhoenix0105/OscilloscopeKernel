@@ -10,8 +10,7 @@ namespace OscilloscopeKernel.Drawing
 { 
     public interface ICanvas<out T>
     {
-        int Length { get; }
-        int Width { get; }
+        ref SizeStruct GraphSize { get; }
 
         /// <summary>
         /// get or set a pixel with index
@@ -19,7 +18,7 @@ namespace OscilloscopeKernel.Drawing
         /// <param name="x">index x</param>
         /// <param name="y">index y</param>
         /// <returns></returns>
-        ColorTuple this[int x, int y] { get; set; }
+        ColorStruct this[int x, int y] { get; set; }
 
         /// <summary>
         /// output the graph directly and reset the canvas

@@ -38,12 +38,12 @@ namespace OscilloscopeKernel.Wave
             this.wave = wave;
         }
 
-        public IWave GetCut()
+        public IWave GetStateShot()
         {
-            return new Cut(this);
+            return new StateShot(this);
         }
 
-        private class Cut : IWave
+        private class StateShot : IWave
         {
             public double MeanVoltage => voltage_times * wave.MeanVoltage;
 
@@ -53,7 +53,7 @@ namespace OscilloscopeKernel.Wave
             private int total_period;
             private IWave wave;
 
-            public Cut(WaveFixer fixer)
+            public StateShot(WaveFixer fixer)
             {
                 this.voltage_times = fixer.voltage_times;
                 this.total_period = (int)(fixer.period_times * fixer.wave.Period);

@@ -77,7 +77,11 @@ namespace OscilloscopeKernel.Wave
 
         public override bool Equals(object obj)
         {
-            if (obj is ConstantWave)
+            if (obj == null)
+            {
+                return false;
+            }
+            if (this.GetType() == obj.GetType())
             {
                 return this.value == ((ConstantWave)obj).value;
             }

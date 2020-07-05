@@ -1,4 +1,5 @@
 ﻿using OscilloscopeKernel.Drawing;
+using OscilloscopeKernel.Exceptions;
 using OscilloscopeKernel.Producer;
 using OscilloscopeKernel.Tools;
 using OscilloscopeKernel.Wave;
@@ -16,28 +17,33 @@ namespace OscilloscopeKernel
         public ConcurrentQueue<T> Buffer => buffer;
 
         private IRulerDrawer ruler_drawer;
+        private IGraphProducer graph_producer;
         private ConcurrentQueue<T> buffer;
 
         private ConstructorTuple<ICanvas<T>> canvas_constructor;
         private ConstructorTuple<IPointDrawer> point_drawer_constructor;
-        private ConstructorTuple<IGraphProducer> graph_producer_constructor;
 
-        private readonly Dictionary<ICanvas<T>, bool> canvas_using = new Dictionary<ICanvas<T>, bool>();
-        private readonly Dictionary<IPointDrawer, bool> point_drawer_using = new Dictionary<IPointDrawer, bool>();
-        private readonly Dictionary<IGraphProducer, bool> graph_producer_using = new Dictionary<IGraphProducer, bool>();
+        private readonly ConcurrentQueue<ICanvas<T>> free_canvas;
+        private readonly ConcurrentQueue<IPointDrawer> free_point_drawer;
 
         public MultiThreadOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
-            ConstructorTuple<IGraphProducer> graph_producer_constructor,
+            IGraphProducer graph_producer,
             ConcurrentQueue<T> buffer = null,
             int buffer_max = 20)
         {
+            ICanvas<T> canvas = canvas_constructor.NewInstance();
+            IPointDrawer point_drawer = point_drawer_constructor.NewInstance();
+            if (canvas.GraphSize != point_drawer.GraphSize || canvas.GraphSize != ruler_drawer.GraphSize)
+            {
+                throw new OscillocopeBuildException("canvas, point_drawer, ruler_drawer have different GraphSize");
+            }
             this.canvas_constructor = canvas_constructor;
             this.point_drawer_constructor = point_drawer_constructor;
             this.ruler_drawer = ruler_drawer;
-            this.graph_producer_constructor = graph_producer_constructor;
+            this.graph_producer = graph_producer;
             if (buffer == null)
             {
                 this.buffer = new ConcurrentQueue<T>();
@@ -46,50 +52,32 @@ namespace OscilloscopeKernel
             {
                 this.buffer = buffer;
             }
-        }
-
-        private U GetFreeInstance<U>(ConstructorTuple<U> constructor, Dictionary<U, bool> u_using)
-        {
-            foreach(KeyValuePair<U, bool> entry in u_using)
-            {
-                if (entry.Value == false)
-                {
-                    return entry.Key;
-                }
-            }
-            U new_instance = constructor.NewInstance();
-            u_using.Add(new_instance, false);
-            return new_instance;
+            this.free_canvas.Enqueue(canvas);
+            this.free_point_drawer.Enqueue(point_drawer);
         }
 
         protected void Draw(double delta_time)
         {
             ICanvas<T> canvas;
-            lock (canvas_using)
+            if (!free_canvas.TryDequeue(out canvas))
             {
-                canvas = GetFreeInstance(canvas_constructor, canvas_using);
-                canvas_using[canvas] = false;
+                canvas = canvas_constructor.NewInstance();
             }
             IPointDrawer point_drawer;
-            lock (point_drawer_using)
+            if (!free_point_drawer.TryDequeue(out point_drawer))
             {
-                point_drawer = GetFreeInstance(point_drawer_constructor, point_drawer_using);
-                point_drawer_using[point_drawer] = false;
-            }
-            IGraphProducer graph_producer;
-            lock (graph_producer_using)
-            {
-                graph_producer = GetFreeInstance(graph_producer_constructor, graph_producer_using);
-                graph_producer_using[graph_producer] = false;
+                point_drawer = point_drawer_constructor.NewInstance();
             }
             T new_graph = graph_producer.Produce(
                 delta_time: delta_time,
                 canvas: canvas,
                 point_drawer: point_drawer,
                 ruler_drawer: ruler_drawer,
-                x_wave: XFixer.GetCut(),
-                y_wave: YFixer.GetCut());
+                x_wave: XFixer.GetStateShot(),
+                y_wave: YFixer.GetStateShot());
             buffer.Enqueue(new_graph);
+            free_canvas.Enqueue(canvas);
+            free_point_drawer.Enqueue(point_drawer);
         }
     }
 
@@ -99,13 +87,13 @@ namespace OscilloscopeKernel
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
-            ConstructorTuple<IGraphProducer> graph_producer_constructor,
+            IGraphProducer graph_producer,
             ConcurrentQueue<T> buffer = null,
             int buffer_max = 20)
             : base(canvas_constructor, 
                   point_drawer_constructor, 
                   ruler_drawer, 
-                  graph_producer_constructor,
+                  graph_producer,
                   buffer,
                   buffer_max)
         { }
@@ -124,12 +112,13 @@ namespace OscilloscopeKernel
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
-            ConstructorTuple<IGraphProducer> graph_producer_constructor,
+            IGraphProducer graph_producer,
             ConcurrentQueue<T> buffer = null,
             int buffer_max = 20)
             : base(canvas_constructor, 
                   point_drawer_constructor, 
-                  ruler_drawer, graph_producer_constructor, 
+                  ruler_drawer, 
+                  graph_producer, 
                   buffer,
                   buffer_max)
         { }
