@@ -1,22 +1,22 @@
 ﻿using OscilloscopeKernel.Drawing;
 using OscilloscopeKernel.Tools;
+using OscilloscopeKernel.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace OscilloscopeKernel.Producer
 {
-    public class SimpleProducer : IGraphProducer
+    public class SingleThreadProducer : IGraphProducer
     {
         public bool RequireMultiThreadDrawer => false;
 
-        private double saved_x_phase = 0;
-        private double saved_y_phase = 0;
+        private double x_phase = 0;
+        private double y_phase = 0;
         private int calculate_times;
-        private readonly object locker = new Object();
         private readonly ColorStruct graph_color;
 
-        public SimpleProducer(int calculate_times, ColorStruct graph_color)
+        public SingleThreadProducer(int calculate_times, ColorStruct graph_color)
         {
             this.calculate_times = calculate_times;
             this.graph_color = graph_color;
@@ -26,24 +26,11 @@ namespace OscilloscopeKernel.Producer
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
-            double old_x_phase;
-            double old_y_phase;
-            lock (locker)
-            {
-                old_x_phase = saved_x_phase;
-                old_y_phase = saved_y_phase;
-                saved_x_phase += x_delta_phase;
-                saved_y_phase += y_delta_phase;
-                saved_x_phase -= (int)saved_x_phase;
-                saved_y_phase -= (int)saved_y_phase;
-            }
             double x_phase_step = x_delta_phase / calculate_times;
             double y_phase_step = y_delta_phase / calculate_times;
             x_phase_step -= (int)x_phase_step;
             y_phase_step -= (int)y_phase_step;
-            double x_phase = old_x_phase;
-            double y_phase = old_x_phase;
-
+            
             for (int i = 0; i < calculate_times; i++)
             {
                 x_phase += x_phase_step;

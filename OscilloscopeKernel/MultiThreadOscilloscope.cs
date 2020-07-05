@@ -41,6 +41,10 @@ namespace OscilloscopeKernel
             {
                 throw new OscillocopeBuildException("canvas, point_drawer, ruler_drawer have different GraphSize");
             }
+            if (graph_producer.RequireMultiThreadDrawer && !point_drawer.IsMultiThreadSafe)
+            {
+                throw new OscillocopeBuildException("graph_producer require multi-thread-safe PointDrawer but point_drawer is not");
+            }
             this.canvas_constructor = canvas_constructor;
             this.point_drawer_constructor = point_drawer_constructor;
             this.ruler_drawer = ruler_drawer;

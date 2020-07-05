@@ -7,6 +7,7 @@ namespace OscilloscopeKernel.Drawing
 {
     public interface IPointDrawer
     {
+        bool IsMultiThreadSafe { get; }
         ref SizeStruct GraphSize { get; }
         void SetPoint(in PositionStruct position);
         void DrawAllPoint<T>(ICanvas<T> canvas, ColorStruct color, in SizeStruct point_size);
