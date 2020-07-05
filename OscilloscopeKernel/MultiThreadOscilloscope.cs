@@ -93,27 +93,52 @@ namespace OscilloscopeKernel
         }
     }
 
-    public class DriveredOscilloscope<T> : MultiThreadOscilloscope<T>
+    public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>
     {
-        private double delta_time;
-        private Timer timer;
-
-        public DriveredOscilloscope(
+        public UndrivedOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IRulerDrawer ruler_drawer,
             ConstructorTuple<IGraphProducer> graph_producer_constructor,
             ConcurrentQueue<T> buffer = null,
             int buffer_max = 20)
-            : base(canvas_constructor, point_drawer_constructor, ruler_drawer, graph_producer_constructor, buffer, buffer_max)
+            : base(canvas_constructor, 
+                  point_drawer_constructor, 
+                  ruler_drawer, 
+                  graph_producer_constructor,
+                  buffer,
+                  buffer_max)
+        { }
+
+        public new void Draw(double delta_time)
         {
+            base.Draw(delta_time);
         }
+    }
+
+    public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>
+    {
+        private Timer timer = null;
+
+        public DrivedOscilloscope(
+            ConstructorTuple<ICanvas<T>> canvas_constructor,
+            ConstructorTuple<IPointDrawer> point_drawer_constructor,
+            IRulerDrawer ruler_drawer,
+            ConstructorTuple<IGraphProducer> graph_producer_constructor,
+            ConcurrentQueue<T> buffer = null,
+            int buffer_max = 20)
+            : base(canvas_constructor, 
+                  point_drawer_constructor, 
+                  ruler_drawer, graph_producer_constructor, 
+                  buffer,
+                  buffer_max)
+        { }
 
         public void Start(int delta_time)
         {
             int timer_delta_time = delta_time * 1000 / Waves.UNIT_NUMBER_PRO_SECOND;
-            this.delta_time = timer_delta_time;
-            timer = new Timer(o => base.Draw(this.delta_time), null, 500, timer_delta_time);
+            delta_time = timer_delta_time * Waves.UNIT_NUMBER_PRO_SECOND / 1000;
+            timer = new Timer(o => base.Draw(delta_time), null, 500, timer_delta_time);
         }
 
         public void End()
