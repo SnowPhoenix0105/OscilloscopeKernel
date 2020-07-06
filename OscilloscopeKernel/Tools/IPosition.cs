@@ -9,8 +9,11 @@ namespace OscilloscopeKernel.Tools
     {
 		int X { get; }
 		int Y { get; }
+    }
 
-        protected static bool Equals(IPosition position, object other)
+    public static class Positions
+    {
+        public static bool Equals(IPosition position, object other)
         {
             if (!(other is IPosition))
             {
@@ -19,10 +22,11 @@ namespace OscilloscopeKernel.Tools
             return (position.Y == ((IPosition)other).X) && (position.Y == ((IPosition)other).Y);
         }
 
-        protected static int GetHashCode(IPosition position)
+        public static int GetHashCode(IPosition position)
         {
             return (position.Y << 4) ^ position.X;
         }
+
     }
 
     public readonly struct PositionStruct : IPosition

@@ -55,8 +55,8 @@ namespace OscilloscopeKernel.Producer
         private double wheel_length;
         private double wheel_width;
         private double slide_length;
-        private WaveFixer x_fixer;
-        private WaveFixer y_fixer;
+        private WaveFixer x_fixer = new WaveFixer();
+        private WaveFixer y_fixer = new WaveFixer();
         private int offset_x;
         private int offset_y;
         private int point_length;

@@ -11,8 +11,22 @@ namespace OscilloscopeKernel.Wave
         int Period { get; }
 
         double Voltage(double phase);
+    }
 
-        public static IWave operator +(IWave left, IWave right)
+    public abstract class AdditiveWave : IWave
+    {
+        public abstract double MeanVoltage { get; }
+
+        public abstract int Period { get; }
+
+        public abstract double Voltage(double phase);
+
+        public static AdditiveWave operator +(AdditiveWave left, IWave right)
+        {
+            return new AddWave(left, right);
+        }
+
+        public static AdditiveWave operator +(IWave left, AdditiveWave right)
         {
             return new AddWave(left, right);
         }
@@ -48,13 +62,19 @@ namespace OscilloscopeKernel.Wave
             mean += little_sum / calculate_times;
             return mean;
         }
+
+        public static IWave Add(IWave left, IWave right)
+        {
+            return new AddWave(left, right);
+        }
     }
 
-    public class ConstantWave : IWave
-    {
-        public double MeanVoltage => value;
 
-        public int Period => 1;
+    public class ConstantWave : AdditiveWave
+    {
+        public override double MeanVoltage => value;
+
+        public override int Period => 1;
 
         private double value;
 
@@ -63,7 +83,7 @@ namespace OscilloscopeKernel.Wave
             this.value = voltage;
         }
 
-        public double Voltage(double phase) => value;
+        public override double Voltage(double phase) => value;
 
         public override string ToString()
         {
@@ -89,11 +109,11 @@ namespace OscilloscopeKernel.Wave
         }
     }
 
-    class AddWave : IWave
+    class AddWave : AdditiveWave
     {
-        public double MeanVoltage => mean_voltage;
+        public override double MeanVoltage => mean_voltage;
 
-        public int Period => period;
+        public override int Period => period;
 
         private IWave wave1;
         private IWave wave2;
@@ -112,7 +132,7 @@ namespace OscilloscopeKernel.Wave
             this.period = GetLeastCommonMultiple(wave1.Period, wave2.Period);
         }
 
-        public double Voltage(double phase)
+        public override double Voltage(double phase)
         {
             double time = phase * period;
             double phase1 = time / period1;

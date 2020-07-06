@@ -4,13 +4,13 @@ using System.Text;
 
 namespace OscilloscopeKernel.Wave
 {
-    public class FunctionWave : IWave
+    public class FunctionWave : AdditiveWave
     {
         public delegate double WaveFunction(double phase);
 
-        public double MeanVoltage => mean_voltage;
+        public override double MeanVoltage => mean_voltage;
 
-        public int Period => period;
+        public override int Period => period;
 
         protected double VoltageTimes => voltage_times;
 
@@ -35,7 +35,7 @@ namespace OscilloscopeKernel.Wave
             this.mean_voltage = voltage_times * function_mean;
         }
 
-        public double Voltage(double phase)
+        public override double Voltage(double phase)
         {
             return voltage_times * function(phase);
         }

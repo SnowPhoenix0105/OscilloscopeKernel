@@ -17,6 +17,13 @@ namespace OscilloscopeFramwork
 
         public ref SizeStruct GraphSize => throw new NotImplementedException();
 
+        private SizeStruct graph_size;
+
+        public BitmapCanvas(int length, int width)
+        {
+            this.graph_size = new SizeStruct(length, width);
+        }
+
         public Bitmap Output()
         {
             throw new NotImplementedException();
