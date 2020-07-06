@@ -74,6 +74,10 @@ namespace OscilloscopeKernel
             {
                 point_drawer = point_drawer_constructor.NewInstance();
             }
+            while (!canvas.IsReady)
+            {
+                Thread.Yield();
+            }
             ruler_drawer.Draw(canvas);
             graph_producer.Produce(
                 delta_time: delta_time,

@@ -54,7 +54,7 @@ namespace OscilloscopeKernel.Drawing
             max_x = (length + 1) >> 1;
             max_y = (width + 1) >> 1;
             min_x = max_x - length;
-            max_y = max_y - width;
+            min_y = max_y - width;
         }
 
         protected bool InsideRange(int x, int y)

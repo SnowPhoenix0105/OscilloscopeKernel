@@ -54,6 +54,10 @@ namespace OscilloscopeKernel
 
         protected T Draw(double delta_time)
         {
+            while (!canvas.IsReady)
+            {
+                Thread.Yield();
+            }
             ruler_drawer.Draw(canvas);
             graph_producer.Produce(
                 delta_time: delta_time,

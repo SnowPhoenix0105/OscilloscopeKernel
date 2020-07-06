@@ -34,6 +34,8 @@ namespace OscilloscopeKernelTest
             }
         }
 
+        public override bool IsReady => true;
+
         private bool[,] canvas;
 
         public BooleanArrayConvas(int length, int width)
