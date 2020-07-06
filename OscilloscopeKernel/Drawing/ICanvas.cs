@@ -12,6 +12,8 @@ namespace OscilloscopeKernel.Drawing
     {
         ref SizeStruct GraphSize { get; }
 
+        bool IsReady { get; }
+
         /// <summary>
         /// get or set a pixel with index
         /// </summary>
@@ -32,6 +34,8 @@ namespace OscilloscopeKernel.Drawing
         public abstract Color this[int x, int y] { get; set; }
 
         public ref SizeStruct GraphSize => ref graph_size;
+
+        public abstract bool IsReady { get; }
 
         protected int supX => max_x;
         protected int subX => min_x;

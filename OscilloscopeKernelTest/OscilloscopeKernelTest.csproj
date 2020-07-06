@@ -17,4 +17,8 @@
     <ProjectReference Include="..\OscilloscopeKernel\OscilloscopeKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Drawing\" />
+  </ItemGroup>
+
 </Project>
