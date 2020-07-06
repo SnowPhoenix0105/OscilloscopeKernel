@@ -1,7 +1,5 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Text;
 
@@ -9,8 +7,8 @@ namespace OscilloscopeKernel.Tools
 {
     public readonly struct SizeStruct
     {
-        public readonly int Length { get; }
-        public readonly int Width { get; }
+        public int Length { get; }
+        public int Width { get; }
 
         public SizeStruct(int length, int width)
         {

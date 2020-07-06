@@ -22,7 +22,7 @@ namespace OscilloscopeKernel.Producer
             this.graph_color = graph_color;
         }
 
-        public T Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IRulerDrawer ruler_drawer, IControlInformation information)
+        public void Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IControlInformation information)
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
@@ -55,8 +55,6 @@ namespace OscilloscopeKernel.Producer
             }
 
             point_drawer.DrawAllPoint(canvas, graph_color, information.PointSize);
-            ruler_drawer.Draw(canvas);
-            return canvas.Output();
         }
     }
 }

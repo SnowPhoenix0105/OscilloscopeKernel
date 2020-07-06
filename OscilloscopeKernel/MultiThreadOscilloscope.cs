@@ -24,8 +24,8 @@ namespace OscilloscopeKernel
         private ConstructorTuple<ICanvas<T>> canvas_constructor;
         private ConstructorTuple<IPointDrawer> point_drawer_constructor;
 
-        private readonly ConcurrentQueue<ICanvas<T>> free_canvas;
-        private readonly ConcurrentQueue<IPointDrawer> free_point_drawer;
+        private readonly ConcurrentQueue<ICanvas<T>> free_canvas = new ConcurrentQueue<ICanvas<T>>();
+        private readonly ConcurrentQueue<IPointDrawer> free_point_drawer = new ConcurrentQueue<IPointDrawer>();
 
         public MultiThreadOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
@@ -74,12 +74,13 @@ namespace OscilloscopeKernel
             {
                 point_drawer = point_drawer_constructor.NewInstance();
             }
-            T new_graph = graph_producer.Produce(
+            ruler_drawer.Draw(canvas);
+            graph_producer.Produce(
                 delta_time: delta_time,
                 canvas: canvas,
                 point_drawer: point_drawer,
-                ruler_drawer: ruler_drawer,
                 information: control_panel.GetStateShot());
+            T new_graph = canvas.Output();
             buffer.Enqueue(new_graph);
             free_canvas.Enqueue(canvas);
             free_point_drawer.Enqueue(point_drawer);

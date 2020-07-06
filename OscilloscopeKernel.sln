@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OscilloscopeKernel", "OscilloscopeKernel\OscilloscopeKernel.csproj", "{2F39106F-C9F9-4469-8458-168B5F140BC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OscilloscopeKernelTest", "OscilloscopeKernelTest\OscilloscopeKernelTest.csproj", "{95EF9010-C696-4505-BBD6-E91A7B2D8D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscilloscopeKernelTest", "OscilloscopeKernelTest\OscilloscopeKernelTest.csproj", "{95EF9010-C696-4505-BBD6-E91A7B2D8D29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscilloscopeFramwork", "Framwork\OscilloscopeFramwork.csproj", "{79064CC3-2BA4-4BD6-9C2B-544908A1A42B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscilloscopeKernel", "OscilloscopeKernel\OscilloscopeKernel.csproj", "{D8B7D9EC-320A-4666-9C68-D7652ABA4231}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F39106F-C9F9-4469-8458-168B5F140BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F39106F-C9F9-4469-8458-168B5F140BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F39106F-C9F9-4469-8458-168B5F140BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F39106F-C9F9-4469-8458-168B5F140BC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95EF9010-C696-4505-BBD6-E91A7B2D8D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95EF9010-C696-4505-BBD6-E91A7B2D8D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95EF9010-C696-4505-BBD6-E91A7B2D8D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95EF9010-C696-4505-BBD6-E91A7B2D8D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79064CC3-2BA4-4BD6-9C2B-544908A1A42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79064CC3-2BA4-4BD6-9C2B-544908A1A42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79064CC3-2BA4-4BD6-9C2B-544908A1A42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79064CC3-2BA4-4BD6-9C2B-544908A1A42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

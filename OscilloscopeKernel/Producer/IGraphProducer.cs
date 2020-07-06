@@ -10,11 +10,10 @@ namespace OscilloscopeKernel.Producer
     {
         bool RequireMultiThreadDrawer { get; }
 
-        T Produce<T>(
+        void Produce<T>(
             double delta_time, 
             ICanvas<T> canvas, 
             IPointDrawer point_drawer, 
-            IRulerDrawer ruler_drawer, 
             IControlInformation information);
     }
 }

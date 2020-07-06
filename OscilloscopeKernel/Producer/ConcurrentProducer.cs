@@ -2,12 +2,13 @@
 using OscilloscopeKernel.Tools;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OscilloscopeKernel.Producer
 {
-    public class TotalConcurrentProducer
+    public class TotalConcurrentProducer : IGraphProducer
     {
         public bool RequireMultiThreadDrawer => true;
 
@@ -23,7 +24,7 @@ namespace OscilloscopeKernel.Producer
             this.graph_color = graph_color;
         }
 
-        public T Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IRulerDrawer ruler_drawer, IControlInformation information)
+        public void Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IControlInformation information)
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
@@ -52,12 +53,10 @@ namespace OscilloscopeKernel.Producer
             });
 
             point_drawer.DrawAllPoint(canvas, graph_color, information.PointSize);
-            ruler_drawer.Draw(canvas);
-            return canvas.Output();
         }
     }
 
-    public class PartlyConcurrentProducer
+    public class PartlyConcurrentProducer : IGraphProducer
     {
         public bool RequireMultiThreadDrawer => true;
 
@@ -75,7 +74,7 @@ namespace OscilloscopeKernel.Producer
             this.calculate_unit_times = calculate_unit_times;
         }
 
-        public T Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IRulerDrawer ruler_drawer, IControlInformation information)
+        public void Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IControlInformation information)
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
@@ -108,8 +107,6 @@ namespace OscilloscopeKernel.Producer
             });
 
             point_drawer.DrawAllPoint(canvas, graph_color, information.PointSize);
-            ruler_drawer.Draw(canvas);
-            return canvas.Output();
         }
     }
 }

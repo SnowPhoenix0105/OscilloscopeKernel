@@ -54,12 +54,13 @@ namespace OscilloscopeKernel
 
         protected T Draw(double delta_time)
         {
-            return graph_producer.Produce(
+            ruler_drawer.Draw(canvas);
+            graph_producer.Produce(
                 delta_time: delta_time,
                 canvas: canvas,
                 point_drawer: point_drawer,
-                ruler_drawer: ruler_drawer,
                 information: control_panel.GetStateShot());
+            return canvas.Output();
         }
     }
 
