@@ -16,9 +16,9 @@ namespace OscilloscopeKernel.Producer
         private double saved_y_phase = 0;
         private int calculate_times;
         private readonly object locker = new Object();
-        private readonly ColorStruct graph_color;
+        private readonly Color graph_color;
 
-        public TotalConcurrentProducer(int calculate_times, ColorStruct graph_color)
+        public TotalConcurrentProducer(int calculate_times, Color graph_color)
         {
             this.calculate_times = calculate_times;
             this.graph_color = graph_color;
@@ -65,9 +65,9 @@ namespace OscilloscopeKernel.Producer
         private int calculate_unit_number;
         private int calculate_unit_times;
         private readonly object locker = new Object();
-        private readonly ColorStruct graph_color;
+        private readonly Color graph_color;
 
-        public PartlyConcurrentProducer(int calculate_unit_number, int calculate_unit_times, ColorStruct graph_color)
+        public PartlyConcurrentProducer(int calculate_unit_number, int calculate_unit_times, Color graph_color)
         {
             this.calculate_unit_number = calculate_unit_number;
             this.graph_color = graph_color;

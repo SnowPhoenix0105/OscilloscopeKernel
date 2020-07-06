@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OscilloscopeKernelTest", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OscilloscopeKernel", "OscilloscopeKernel\OscilloscopeKernel.csproj", "{D8B7D9EC-320A-4666-9C68-D7652ABA4231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscilloscopeFramework", "OscilloscopeFramework\OscilloscopeFramework.csproj", "{FD194463-27A5-4240-99A7-8775CAD0B557}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OscilloscopeFramework", "OscilloscopeFramework\OscilloscopeFramework.csproj", "{3BBD6609-0203-4150-A5DD-959A583EAD9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8B7D9EC-320A-4666-9C68-D7652ABA4231}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD194463-27A5-4240-99A7-8775CAD0B557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD194463-27A5-4240-99A7-8775CAD0B557}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD194463-27A5-4240-99A7-8775CAD0B557}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD194463-27A5-4240-99A7-8775CAD0B557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BBD6609-0203-4150-A5DD-959A583EAD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BBD6609-0203-4150-A5DD-959A583EAD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BBD6609-0203-4150-A5DD-959A583EAD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BBD6609-0203-4150-A5DD-959A583EAD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

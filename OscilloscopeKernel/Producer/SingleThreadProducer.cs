@@ -4,6 +4,7 @@ using OscilloscopeKernel.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace OscilloscopeKernel.Producer
 {
@@ -14,9 +15,9 @@ namespace OscilloscopeKernel.Producer
         private double x_phase = 0;
         private double y_phase = 0;
         private int calculate_times;
-        private readonly ColorStruct graph_color;
+        private readonly Color graph_color;
 
-        public SingleThreadProducer(int calculate_times, ColorStruct graph_color)
+        public SingleThreadProducer(int calculate_times, Color graph_color)
         {
             this.calculate_times = calculate_times;
             this.graph_color = graph_color;

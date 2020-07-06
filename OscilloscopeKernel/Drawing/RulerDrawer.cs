@@ -3,6 +3,7 @@ using OscilloscopeKernel.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace OscilloscopeKernel.Drawing
 {
@@ -15,12 +16,12 @@ namespace OscilloscopeKernel.Drawing
         protected int YMax => max_y;
 
         private SizeStruct size_struct;
-        private ColorStruct color_struct;
+        private Color color_struct;
         private int max_x;
         private int max_y;
         private int extend_width;
         
-        public CrossRulerDrawer(int length, int width, ColorStruct color, int extend_width = 1)
+        public CrossRulerDrawer(int length, int width, Color color, int extend_width = 1)
         {
             this.max_x = (length >> 1) + 1;
             this.max_y = (width >> 1) + 1;

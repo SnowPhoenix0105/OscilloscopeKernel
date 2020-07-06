@@ -41,7 +41,7 @@ namespace OscilloscopeKernel.Drawing
 
         protected abstract void FreshOffsets(LinkedList<Position> offsets, in SizeStruct point_size);
 
-        public void DrawAllPoint<T>(ICanvas<T> canvas, ColorStruct color, in SizeStruct point_size)
+        public void DrawAllPoint<T>(ICanvas<T> canvas, Color color, in SizeStruct point_size)
         {
             if (!(this.old_point_size.Equals(point_size)))
             {
