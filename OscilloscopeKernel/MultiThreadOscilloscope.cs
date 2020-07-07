@@ -65,15 +65,19 @@ namespace OscilloscopeKernel
         protected void Draw(double delta_time)
         {
             ICanvas<T> canvas;
-            lock(free_canvas)
+            if (free_canvas.TryDequeue(out canvas))
             {
-                if (free_canvas.TryPeek(out canvas) && canvas.IsReady)
+                if (!canvas.IsReady)
                 {
-                    free_canvas.TryDequeue(out canvas);
+                    free_canvas.Enqueue(canvas_constructor.NewInstance());
                 }
-                else
+            }
+            else
+            {
+                canvas = canvas_constructor.NewInstance();
+                while (!canvas.IsReady)
                 {
-                    canvas = canvas_constructor.NewInstance();
+                    Thread.Yield();
                 }
             }
             IPointDrawer point_drawer;

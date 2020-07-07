@@ -1,4 +1,4 @@
-﻿// #define NEED_TIME_COMPARE
+﻿//#define NEED_TIME_COMPARE
 
 #if NEED_TIME_COMPARE
 
@@ -40,14 +40,14 @@ namespace OscilloscopeFrameworkTest
             panel.PointWidth = 1;
             ConstructorTuple<ICanvas<Bitmap>> canvas_constructor 
                 = new ConstructorTuple<ICanvas<Bitmap>>(typeof(BitmapCanvas), 360, 360, background_color);
-            ConstructorTuple<IPointDrawer> point_drawer_constructor
+            ConstructorTuple<IPointDrawer> multi_point_drawer_constructor
                 = new ConstructorTuple<IPointDrawer>(typeof(ConcurrentOvalPointDrawer), 360, 360);
             IRulerDrawer ruler_drawer = new CrossRulerDrawer(360, 360, ruler_color, 1);
             IGraphProducer total_parallel_graph_producer = new TotalParallelProducer(4321, graph_color);
             DrivedOscilloscope<Bitmap> drived_total_parallel_oscilloscope
                 = new DrivedOscilloscope<Bitmap>(
                     canvas_constructor: canvas_constructor,
-                    point_drawer_constructor: point_drawer_constructor,
+                    point_drawer_constructor: multi_point_drawer_constructor,
                     ruler_drawer: ruler_drawer,
                     graph_producer: total_parallel_graph_producer,
                     control_panel: panel);
@@ -61,11 +61,13 @@ namespace OscilloscopeFrameworkTest
             timer.Dispose();
             Console.WriteLine("drived-oscilloscope + total_parallel_producer -> time:\t" + save_count.ToString());
 
+            ConstructorTuple<IPointDrawer> single_point_drawer_constructor
+                = new ConstructorTuple<IPointDrawer>(typeof(OvalPointDrawer), 360, 360);
             IGraphProducer serial_graph_producer = new SerialProducer(4321, graph_color);
             DrivedOscilloscope<Bitmap> drived_serial_oscilloscope
                 = new DrivedOscilloscope<Bitmap>(
                     canvas_constructor: canvas_constructor,
-                    point_drawer_constructor: point_drawer_constructor,
+                    point_drawer_constructor: single_point_drawer_constructor,
                     ruler_drawer: ruler_drawer,
                     graph_producer: serial_graph_producer,
                     control_panel: panel);
