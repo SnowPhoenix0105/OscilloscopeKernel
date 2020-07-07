@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using OscilloscopeKernel.Tools;
 
 namespace OscilloscopeKernel.Drawing

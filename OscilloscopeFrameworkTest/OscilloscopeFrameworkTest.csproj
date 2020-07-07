@@ -47,13 +47,25 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="BitmapCanvasTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TotalTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OscilloscopeFramework\OscilloscopeFramework.csproj">
+      <Project>{3bbd6609-0203-4150-a5dd-959a583ead9a}</Project>
+      <Name>OscilloscopeFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OscilloscopeKernel\OscilloscopeKernel.csproj">
+      <Project>{d8b7d9ec-320a-4666-9c68-d7652aba4231}</Project>
+      <Name>OscilloscopeKernel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

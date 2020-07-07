@@ -85,6 +85,11 @@ namespace OscilloscopeKernel.Tools
 			this.y = y;
         }
 
+        public override string ToString()
+        {
+            return string.Format("({0}, {1})", x, y);
+        }
+
         public override bool Equals(object other)
         {
             if (!(other is IPosition))
