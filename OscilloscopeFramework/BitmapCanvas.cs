@@ -70,7 +70,7 @@ namespace OscilloscopeFramework
         {
             reset_bitmap = new Task(() =>
             {
-                bitmap = new Bitmap(GraphSize.Length, GraphSize.Width, PixelFormat.Format32bppArgb);
+                bitmap = new Bitmap(GraphSize.Length, GraphSize.Width, PixelFormat.Format32bppPArgb);
                 for (int x = 0; x < GraphSize.Length; x++)
                 {
                     for (int y = 0; y < GraphSize.Width; y++)

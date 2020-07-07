@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OscilloscopeKernel.Producer
 {
-    public class TotalConcurrentProducer : IGraphProducer
+    public class TotalParallelProducer : IGraphProducer
     {
         public bool RequireMultiThreadDrawer => true;
 
@@ -18,7 +18,7 @@ namespace OscilloscopeKernel.Producer
         private readonly object locker = new Object();
         private readonly Color graph_color;
 
-        public TotalConcurrentProducer(int calculate_times, Color graph_color)
+        public TotalParallelProducer(int calculate_times, Color graph_color)
         {
             this.calculate_times = calculate_times;
             this.graph_color = graph_color;
@@ -56,7 +56,7 @@ namespace OscilloscopeKernel.Producer
         }
     }
 
-    public class PartlyConcurrentProducer : IGraphProducer
+    public class PartlyParallelProducer : IGraphProducer
     {
         public bool RequireMultiThreadDrawer => true;
 
@@ -67,7 +67,7 @@ namespace OscilloscopeKernel.Producer
         private readonly object locker = new Object();
         private readonly Color graph_color;
 
-        public PartlyConcurrentProducer(int calculate_unit_number, int calculate_unit_times, Color graph_color)
+        public PartlyParallelProducer(int calculate_unit_number, int calculate_unit_times, Color graph_color)
         {
             this.calculate_unit_number = calculate_unit_number;
             this.graph_color = graph_color;

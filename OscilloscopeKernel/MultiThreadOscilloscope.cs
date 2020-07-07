@@ -21,8 +21,8 @@ namespace OscilloscopeKernel
         private IControlPanel control_panel;
         private ConcurrentQueue<T> buffer;
 
-        private ConstructorTuple<ICanvas<T>> canvas_constructor;
-        private ConstructorTuple<IPointDrawer> point_drawer_constructor;
+        private readonly ConstructorTuple<ICanvas<T>> canvas_constructor;
+        private readonly ConstructorTuple<IPointDrawer> point_drawer_constructor;
 
         private readonly ConcurrentQueue<ICanvas<T>> free_canvas = new ConcurrentQueue<ICanvas<T>>();
         private readonly ConcurrentQueue<IPointDrawer> free_point_drawer = new ConcurrentQueue<IPointDrawer>();
@@ -65,9 +65,16 @@ namespace OscilloscopeKernel
         protected void Draw(double delta_time)
         {
             ICanvas<T> canvas;
-            if (!free_canvas.TryDequeue(out canvas))
+            lock(free_canvas)
             {
-                canvas = canvas_constructor.NewInstance();
+                if (free_canvas.TryPeek(out canvas) && canvas.IsReady)
+                {
+                    free_canvas.TryDequeue(out canvas);
+                }
+                else
+                {
+                    canvas = canvas_constructor.NewInstance();
+                }
             }
             IPointDrawer point_drawer;
             if (!free_point_drawer.TryDequeue(out point_drawer))
@@ -137,6 +144,10 @@ namespace OscilloscopeKernel
 
         public void Start(int delta_time)
         {
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
             int timer_delta_time = delta_time * 1000 / Waves.UNIT_NUMBER_PRO_SECOND;
             delta_time = timer_delta_time * Waves.UNIT_NUMBER_PRO_SECOND / 1000;
             timer = new Timer(o => base.Draw(delta_time), null, 500, timer_delta_time);
