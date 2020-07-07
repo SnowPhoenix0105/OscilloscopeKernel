@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="BitmapCanvasTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TotalTest.cs" />
+    <Compile Include="TimeCostCompare.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

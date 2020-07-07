@@ -226,6 +226,7 @@ src/CommonAssemblyInfo.cs
 
 # others
 count.bat
+clean.bat
 count_result.txt
 OscilloscopeFrameworkTest/TestResource/*
 OscilloscopeKernelTest/TestResource/*
