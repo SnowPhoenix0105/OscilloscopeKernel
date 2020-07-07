@@ -22,17 +22,19 @@ namespace OscilloscopeFrameworkTest
     public class TotalTest
     {
         [TestMethod]
-        public void TestAll()
+        public void PngOutputTest()
         {
             CathodeRayTubPanel panel = new CathodeRayTubPanel();
-            panel.XWave.Wave = new SinWave(Waves.UNIT_NUMBER_PRO_SECOND / 50, 0.4);
-            panel.YWave.Wave = new SawToothWave(Waves.UNIT_NUMBER_PRO_SECOND / 50, 0.4);
+            panel.XWave.Wave = new SinWave(Waves.UNIT_NUMBER_PRO_SECOND / 200, 0.4);
+            panel.YWave.Wave = new SinWave(Waves.UNIT_NUMBER_PRO_SECOND / 110, 0.4);
+            panel.PointLength = 1;
+            panel.PointWidth = 1;
             ConstructorTuple<ICanvas<Bitmap>> canvas_constructor 
                 = new ConstructorTuple<ICanvas<Bitmap>>(typeof(BitmapCanvas), 360, 360);
             ConstructorTuple<IPointDrawer> point_drawer_constructor
                 = new ConstructorTuple<IPointDrawer>(typeof(ConcurrentOvalPointDrawer), 360, 360);
             IRulerDrawer ruler_drawer = new CrossRulerDrawer(360, 360, Color.FromArgb(0xff, 0x10, 0x00, 0xff), 1);
-            IGraphProducer graph_producer = new TotalConcurrentProducer(1234, Color.FromArgb(0xff, 0x10, 0x20, 0xff));
+            IGraphProducer graph_producer = new TotalConcurrentProducer(4321, Color.FromArgb(0xff, 0x10, 0xff, 0x10));
             DrivedOscilloscope<Bitmap> oscilloscope
                 = new DrivedOscilloscope<Bitmap>(
                     canvas_constructor: canvas_constructor,
@@ -41,12 +43,13 @@ namespace OscilloscopeFrameworkTest
                     graph_producer: graph_producer,
                     control_panel: panel);
             ConcurrentQueue<Bitmap> buffer = oscilloscope.Buffer;
-            Timer timer = new Timer(o => DequeueAndSave(buffer), null, 20, 20);
-            oscilloscope.Start(20_000);
+            Timer timer = new Timer(o => DequeueAndSave(buffer), null, 20, 10);
+            oscilloscope.Start(10_000);
             Thread.Sleep(2_000);
             oscilloscope.End();
-            Thread.Sleep(100);
+            Thread.Sleep(2_000);
             timer.Dispose();
+            Console.WriteLine("saved graph number:\t" + save_count.ToString());
         }
 
         private readonly string save_path = "..\\..\\TestResource\\";

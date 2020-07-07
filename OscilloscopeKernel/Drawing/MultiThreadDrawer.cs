@@ -74,9 +74,9 @@ namespace OscilloscopeKernel.Drawing
             int length = point_size.Length;
             int width = point_size.Width;
             int square_radius = length * length + width * width;
-            for (int x = 0; x < length; x++)
+            for (int x = 0; x <= length; x++)
             {
-                for (int y = 0; y < width; y++)
+                for (int y = 0; y <= width; y++)
                 {
                     if (x * x + y * y <= square_radius)
                     {

@@ -13,7 +13,7 @@ namespace OscilloscopeKernel.Drawing
         public ref SizeStruct GraphSize => ref graph_size;
 
         private SizeStruct graph_size;
-        private SizeStruct old_point_size;
+        private SizeStruct old_point_size = new SizeStruct(-1, -1);
         private readonly int max_x;
         private readonly int max_y;
         private CachedPositonPool position_pool;
