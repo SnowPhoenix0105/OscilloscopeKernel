@@ -13,6 +13,6 @@ More details will be provided later.
 
 ## Quick Start
 
-An oscilloscope is splited to 5 part: `ControlPanel`, `GraphProducer`, `RulerDrawer`, `PointDrawer`, `Canvas`.
+An oscilloscope is splited to 5 part: `ControlPanel`, `GraphProducer`, `BackgroundDrawer`, `PointDrawer`, `Canvas`.
 
 
