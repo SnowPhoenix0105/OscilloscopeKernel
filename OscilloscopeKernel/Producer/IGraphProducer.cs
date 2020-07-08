@@ -8,7 +8,7 @@ namespace OscilloscopeKernel.Producer
 {
     public interface IGraphProducer
     {
-        bool RequireMultiThreadDrawer { get; }
+        bool RequireConcurrentDrawer { get; }
 
         void Produce<T>(
             double delta_time, 

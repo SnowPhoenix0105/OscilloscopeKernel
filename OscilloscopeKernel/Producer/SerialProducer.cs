@@ -10,7 +10,7 @@ namespace OscilloscopeKernel.Producer
 {
     public class SerialProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => false;
+        public bool RequireConcurrentDrawer => false;
 
         private double saved_x_phase = 0;
         private double saved_y_phase = 0;
@@ -44,7 +44,7 @@ namespace OscilloscopeKernel.Producer
             x_phase_step -= (int)x_phase_step;
             y_phase_step -= (int)y_phase_step;
             double x_phase = old_x_phase;
-            double y_phase = old_x_phase;
+            double y_phase = old_y_phase;
 
             for (int i = 0; i < calculate_times; i++)
             {
@@ -63,7 +63,7 @@ namespace OscilloscopeKernel.Producer
 
     public class GhostSerialProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => false;
+        public bool RequireConcurrentDrawer => false;
 
         private double saved_x_phase = 0;
         private double saved_y_phase = 0;
@@ -107,7 +107,7 @@ namespace OscilloscopeKernel.Producer
             x_phase_step -= (int)x_phase_step;
             y_phase_step -= (int)y_phase_step;
             double x_phase = old_x_phase;
-            double y_phase = old_x_phase;
+            double y_phase = old_y_phase;
 
             for (int i = 0; i < ghost_number; i++)
             {

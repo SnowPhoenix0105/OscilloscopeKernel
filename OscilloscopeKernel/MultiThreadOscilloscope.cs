@@ -12,11 +12,10 @@ using System.Threading;
 
 namespace OscilloscopeKernel
 {
-    public class MultiThreadOscilloscope<T> : Oscilloscope
+    public abstract class MultiThreadOscilloscope<T>
     {
         public ConcurrentQueue<T> Buffer => buffer;
 
-        private IRulerDrawer ruler_drawer;
         private IGraphProducer graph_producer;
         private IControlPanel control_panel;
         private ConcurrentQueue<T> buffer;
@@ -30,24 +29,22 @@ namespace OscilloscopeKernel
         public MultiThreadOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
-            IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
             IControlPanel control_panel,
             ConcurrentQueue<T> buffer = null)
         {
             ICanvas<T> canvas = canvas_constructor.NewInstance();
             IPointDrawer point_drawer = point_drawer_constructor.NewInstance();
-            if (canvas.GraphSize != point_drawer.GraphSize || canvas.GraphSize != ruler_drawer.GraphSize)
+            if (canvas.GraphSize != point_drawer.GraphSize)
             {
-                throw new OscillocopeBuildException("canvas, point_drawer, ruler_drawer have different GraphSize");
+                throw new OscillocopeBuildException("canvas and point_drawer have different GraphSize", new DifferentGraphSizeException());
             }
-            if (graph_producer.RequireMultiThreadDrawer && !point_drawer.IsMultiThreadSafe)
+            if (graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent)
             {
                 throw new OscillocopeBuildException("graph_producer require multi-thread-safe PointDrawer but point_drawer is not");
             }
             this.canvas_constructor = canvas_constructor;
             this.point_drawer_constructor = point_drawer_constructor;
-            this.ruler_drawer = ruler_drawer;
             this.graph_producer = graph_producer;
             this.control_panel = control_panel;
             if (buffer == null)
@@ -75,10 +72,6 @@ namespace OscilloscopeKernel
             else
             {
                 canvas = canvas_constructor.NewInstance();
-                while (!canvas.IsReady)
-                {
-                    Thread.Yield();
-                }
             }
             IPointDrawer point_drawer;
             if (!free_point_drawer.TryDequeue(out point_drawer))
@@ -89,7 +82,6 @@ namespace OscilloscopeKernel
             {
                 Thread.Yield();
             }
-            ruler_drawer.Draw(canvas);
             graph_producer.Produce(
                 delta_time: delta_time,
                 canvas: canvas,
@@ -107,14 +99,12 @@ namespace OscilloscopeKernel
         public UndrivedOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
-            IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
             IControlPanel control_panel,
             ConcurrentQueue<T> buffer = null)
             : base(
                   canvas_constructor: canvas_constructor,
                   point_drawer_constructor: point_drawer_constructor,
-                  ruler_drawer: ruler_drawer, 
                   graph_producer: graph_producer,
                   control_panel: control_panel,
                   buffer: buffer)
@@ -133,14 +123,12 @@ namespace OscilloscopeKernel
         public DrivedOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
-            IRulerDrawer ruler_drawer,
             IGraphProducer graph_producer,
             IControlPanel control_panel,
             ConcurrentQueue<T> buffer = null)
             : base(
                   canvas_constructor: canvas_constructor,
                   point_drawer_constructor: point_drawer_constructor,
-                  ruler_drawer: ruler_drawer,
                   graph_producer: graph_producer,
                   control_panel: control_panel,
                   buffer: buffer)

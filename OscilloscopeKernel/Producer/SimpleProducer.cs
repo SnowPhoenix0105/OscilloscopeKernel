@@ -10,7 +10,7 @@ namespace OscilloscopeKernel.Producer
 {
     public class SimpleProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => false;
+        public bool RequireConcurrentDrawer => false;
 
         private double x_phase = 0;
         private double y_phase = 0;

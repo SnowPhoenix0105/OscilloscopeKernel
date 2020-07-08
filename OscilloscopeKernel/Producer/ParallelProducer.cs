@@ -12,7 +12,7 @@ namespace OscilloscopeKernel.Producer
 {
     public class TotalParallelProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => true;
+        public bool RequireConcurrentDrawer => true;
 
         private double saved_x_phase = 0;
         private double saved_y_phase = 0;
@@ -60,7 +60,7 @@ namespace OscilloscopeKernel.Producer
 
     public class PartlyParallelProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => true;
+        public bool RequireConcurrentDrawer => true;
 
         private double saved_x_phase = 0;
         private double saved_y_phase = 0;
@@ -114,7 +114,7 @@ namespace OscilloscopeKernel.Producer
 
     public class GhostParallelProducer : IGraphProducer
     {
-        public bool RequireMultiThreadDrawer => true;
+        public bool RequireConcurrentDrawer => true;
 
         private double saved_x_phase = 0;
         private double saved_y_phase = 0;
@@ -138,7 +138,7 @@ namespace OscilloscopeKernel.Producer
             this.ghost_color = Color.FromArgb(graph_color.A, graph_color.R >> 1, graph_color.G >> 1, graph_color.B >> 1);
         }
 
-        public void Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IControlInformation information)
+        public async void Produce<T>(double delta_time, ICanvas<T> canvas, IPointDrawer point_drawer, IControlInformation information)
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
@@ -188,10 +188,7 @@ namespace OscilloscopeKernel.Producer
                 point_drawer.SetPoint(position);
             });
 
-            while (!ghost_fresh.IsCompleted)
-            {
-                Thread.Yield();
-            }
+            await ghost_fresh;
 
             point_drawer.DrawAllPoint(canvas, graph_color, information.PointSize);
         }

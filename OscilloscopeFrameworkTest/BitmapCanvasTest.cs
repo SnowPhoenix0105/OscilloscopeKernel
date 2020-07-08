@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OscilloscopeFramework;
 using System.Drawing;
 using System.Threading;
+using OscilloscopeKernel.Drawing;
 
 namespace OscilloscopeFrameworkTest
 {
@@ -66,27 +67,27 @@ namespace OscilloscopeFrameworkTest
         [TestMethod]
         public void TestReset()
         {
-            BitmapCanvas canvas = new BitmapCanvas(360, 360, back_ground);
+            BitmapCanvas canvas = new BitmapCanvas(360, 360, new BackgroundDrawer(360, 360, back_ground));
             int wait_count = TestConvas(canvas, -180, 180, -180, 180);
             Console.WriteLine("360 * 360, wait_count:\t" + wait_count.ToString());
 
 
-            canvas = new BitmapCanvas(361, 361, back_ground);
+            canvas = new BitmapCanvas(361, 361, new BackgroundDrawer(361, 361, back_ground));
             wait_count = TestConvas(canvas, -180, 181, -180, 181);
             Console.WriteLine("361 * 361, wait_count:\t" + wait_count.ToString());
 
 
-            canvas = new BitmapCanvas(360, 361, back_ground);
+            canvas = new BitmapCanvas(360, 361, new BackgroundDrawer(360, 361, back_ground));
             wait_count = TestConvas(canvas, -180, 180, -180, 181);
             Console.WriteLine("360 * 361, wait_count:\t" + wait_count.ToString());
 
 
-            canvas = new BitmapCanvas(720, 720, back_ground);
+            canvas = new BitmapCanvas(720, 720, new BackgroundDrawer(720, 720, back_ground));
             wait_count = TestConvas(canvas, -360, 360, -360, 360);
             Console.WriteLine("720 * 720, wait_count:\t" + wait_count.ToString());
 
 
-            canvas = new BitmapCanvas(360, 720, back_ground);
+            canvas = new BitmapCanvas(360, 720, new BackgroundDrawer(360, 720, back_ground));
             wait_count = TestConvas(canvas, -180, 180, -360, 360);
             Console.WriteLine("360 * 720, wait_count:\t" + wait_count.ToString());
         }

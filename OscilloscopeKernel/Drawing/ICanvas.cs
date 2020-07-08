@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Threading.Tasks;
+using OscilloscopeKernel.Exceptions;
 using OscilloscopeKernel.Tools;
 
 namespace OscilloscopeKernel.Drawing
@@ -30,7 +33,22 @@ namespace OscilloscopeKernel.Drawing
 
         public ref SizeStruct GraphSize => ref graph_size;
 
-        public abstract bool IsReady { get; }
+        public bool IsReady
+        {
+            get
+            {
+                if (reset_task == null)
+                {
+                    return true;
+                }
+                if (reset_task.IsCompleted)
+                {
+                    reset_task = null;
+                    return true;
+                }
+                return false;
+            }
+        }
 
         protected int supX => max_x;
         protected int subX => min_x;
@@ -42,14 +60,32 @@ namespace OscilloscopeKernel.Drawing
         private readonly int min_x;
         private readonly int max_y;
         private readonly int min_y;
+        private IBackgroundDrawer background_drawer;
+        private Task reset_task = null;
 
-        public Canvas(int length, int width)
+        public Canvas(int length, int width, IBackgroundDrawer background_drawer = null, bool need_reset = true)
         {
             graph_size = new SizeStruct(length, width);
+            if (background_drawer != null)
+            {
+                if (background_drawer.GraphSize != graph_size)
+                {
+                    throw new DifferentGraphSizeException();
+                }
+                this.background_drawer = background_drawer;
+            }
+            else
+            {
+                this.background_drawer = new NoneBackgroundDrawer(length, width);
+            }
             max_x = (length + 1) >> 1;
             max_y = (width + 1) >> 1;
             min_x = max_x - length;
             min_y = max_y - width;
+            if (need_reset)
+            {
+                InternalReset();
+            }
         }
 
         protected bool InsideRange(int x, int y)
@@ -57,6 +93,21 @@ namespace OscilloscopeKernel.Drawing
             bool x_inside = min_x <= x && x < max_x;
             bool y_inside = min_y <= y && y < max_y;
             return x_inside && y_inside;
+        }
+
+        protected virtual void ResetActionsBeforeDrawerWork() { }
+
+        protected virtual void ResetActionsAfterDrawerWork() { }
+
+        protected void InternalReset()
+        {
+            reset_task = new Task(() =>
+            {
+                ResetActionsBeforeDrawerWork();
+                background_drawer.Draw(this);
+                ResetActionsAfterDrawerWork();
+            });
+            reset_task.Start();
         }
 
         public abstract T Output();

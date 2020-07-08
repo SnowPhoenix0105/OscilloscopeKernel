@@ -31,61 +31,20 @@ namespace OscilloscopeFramework
             }
         }
 
-        public override bool IsReady
-        {
-            get
-            {
-                if (reset_bitmap == null)
-                {
-                    return true;
-                }
-                if (reset_bitmap.IsCompleted)
-                {
-                    reset_bitmap = null;
-                    return true;
-                }
-                return false;
-            }
-        }
-
         private Bitmap bitmap;
-        private Color init_color;
-        private Task reset_bitmap = null;
 
-        public BitmapCanvas(int length, int width)
-            : base(length, width)
-        {
-            this.init_color = Color.Black;
-            InternalResetBitmap();
-        }
+        public BitmapCanvas(int length, int width, BackgroundDrawer background_drawer = null)
+            : base(length, width, background_drawer, true) { }
 
-        public BitmapCanvas(int length, int width, Color background_color)
-            : base(length, width)
+        protected override void ResetActionsBeforeDrawerWork()
         {
-            this.init_color = background_color;
-            InternalResetBitmap();
-        }
-
-        private void InternalResetBitmap()
-        {
-            reset_bitmap = new Task(() =>
-            {
-                bitmap = new Bitmap(GraphSize.Length, GraphSize.Width, PixelFormat.Format32bppPArgb);
-                for (int x = 0; x < GraphSize.Length; x++)
-                {
-                    for (int y = 0; y < GraphSize.Width; y++)
-                    {
-                        bitmap.SetPixel(x, y, init_color);
-                    }
-                }
-            });
-            reset_bitmap.Start();
+            bitmap = new Bitmap(GraphSize.Length, GraphSize.Width, PixelFormat.Format32bppPArgb);
         }
 
         public override Bitmap Output()
         {
             Bitmap output = bitmap;
-            InternalResetBitmap();
+            InternalReset();
             return output;
         }
     }

@@ -45,8 +45,18 @@ class & interface
 
 * namespace: [OscilloscopeCore](#OscilloscopeCore).[]()
 * supers: none
+* interfaces: none
 * summary:
   * 
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
@@ -67,7 +77,9 @@ class & interface
   |[](#)()||
   |[](#)()||
 
-### attributes
+### constructors:
+
+### attributes:
 
 ### methods:
 

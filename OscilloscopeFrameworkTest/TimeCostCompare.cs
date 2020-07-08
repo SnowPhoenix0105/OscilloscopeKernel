@@ -1,4 +1,4 @@
-﻿// #define NEED_TIME_COMPARE
+﻿#define NEED_TIME_COMPARE
 
 #if NEED_TIME_COMPARE
 
@@ -34,8 +34,8 @@ namespace OscilloscopeFrameworkTest
         [TestMethod]
         public void PngOutputTest()
         {
-            int TEST_TIMES = 20;
-            int RUNNING_TIME_MILLISCEOND = 20_000;
+            int TEST_TIMES = 1;
+            int RUNNING_TIME_MILLISCEOND = 10_000;
             Color background_color = Color.FromArgb(0xff, 0x00, 0x00, 0x00);
             Color ruler_color = Color.FromArgb(0xff, 0x10, 0x00, 0xff);
             Color graph_color = Color.FromArgb(0xff, 0x10, 0xff, 0x10);
@@ -44,8 +44,9 @@ namespace OscilloscopeFrameworkTest
             panel.YWave.Wave = new SinWave(Waves.UNIT_NUMBER_PRO_SECOND / 220, 0.4);
             panel.PointLength = 1;
             panel.PointWidth = 1;
+            IBackgroundDrawer background_drawer = new CrossBackgroundDrawer(360, 360, background_color, ruler_color, 1);
             ConstructorTuple<ICanvas<Bitmap>> canvas_constructor 
-                = new ConstructorTuple<ICanvas<Bitmap>>(typeof(BitmapCanvas), 360, 360, background_color);
+                = new ConstructorTuple<ICanvas<Bitmap>>(typeof(BitmapCanvas), 360, 360, background_drawer);
             int drived_total_parallel_count = 0;
             int drived_ghost_parallel_count = 0;
             int drived_serial_count = 0;
@@ -56,13 +57,11 @@ namespace OscilloscopeFrameworkTest
             {
                 ConstructorTuple<IPointDrawer> multi_point_drawer_constructor
                 = new ConstructorTuple<IPointDrawer>(typeof(ConcurrentOvalPointDrawer), 360, 360);
-                IRulerDrawer ruler_drawer = new CrossRulerDrawer(360, 360, ruler_color, 1);
                 IGraphProducer total_parallel_graph_producer = new TotalParallelProducer(4321, graph_color);
                 DrivedOscilloscope<Bitmap> drived_total_parallel_oscilloscope
                     = new DrivedOscilloscope<Bitmap>(
                         canvas_constructor: canvas_constructor,
                         point_drawer_constructor: multi_point_drawer_constructor,
-                        ruler_drawer: ruler_drawer,
                         graph_producer: total_parallel_graph_producer,
                         control_panel: panel);
                 ConcurrentQueue<Bitmap> buffer = drived_total_parallel_oscilloscope.Buffer;
@@ -80,7 +79,6 @@ namespace OscilloscopeFrameworkTest
                     = new DrivedOscilloscope<Bitmap>(
                         canvas_constructor: canvas_constructor,
                         point_drawer_constructor: multi_point_drawer_constructor,
-                        ruler_drawer: ruler_drawer,
                         graph_producer: ghost_parallel_graph_producer,
                         control_panel: panel);
                 buffer = drived_ghost_parallel_oscilloscope.Buffer;
@@ -100,7 +98,6 @@ namespace OscilloscopeFrameworkTest
                     = new DrivedOscilloscope<Bitmap>(
                         canvas_constructor: canvas_constructor,
                         point_drawer_constructor: single_point_drawer_constructor,
-                        ruler_drawer: ruler_drawer,
                         graph_producer: serial_graph_producer,
                         control_panel: panel);
                 buffer = drived_serial_oscilloscope.Buffer;
@@ -118,7 +115,6 @@ namespace OscilloscopeFrameworkTest
                     = new DrivedOscilloscope<Bitmap>(
                         canvas_constructor: canvas_constructor,
                         point_drawer_constructor: single_point_drawer_constructor,
-                        ruler_drawer: ruler_drawer,
                         graph_producer: ghost_serial_graph_producer,
                         control_panel: panel);
                 buffer = drived_ghost_serial_oscilloscope.Buffer;
@@ -138,7 +134,6 @@ namespace OscilloscopeFrameworkTest
                     = new TimeCountedOscilloscope<Bitmap>(
                         canvas: canvas,
                         point_drawer: oval_single_drawer,
-                        ruler_drawer: ruler_drawer,
                         graph_producer: simple_graph_producer,
                         control_panel: panel);
                 DateTime start_time = DateTime.Now;

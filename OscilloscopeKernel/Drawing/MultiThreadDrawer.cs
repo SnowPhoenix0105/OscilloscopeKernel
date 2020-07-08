@@ -9,7 +9,7 @@ namespace OscilloscopeKernel.Drawing
 {
     public abstract class ConcurrentDrawer : IPointDrawer
     {
-        public bool IsMultiThreadSafe => true;
+        public bool IsConcurrent => true;
 
         public ref SizeStruct GraphSize => ref graph_size;
 
