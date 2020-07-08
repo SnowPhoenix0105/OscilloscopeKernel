@@ -1,4 +1,5 @@
-﻿#define NEED_TIME_COMPARE
+﻿//#define NEED_TIME_COMPARE
+//#define GHOST_PRODUCER_NEED
 
 #if NEED_TIME_COMPARE
 
@@ -74,6 +75,7 @@ namespace OscilloscopeFrameworkTest
                 timer.Dispose();
                 drived_total_parallel_count = save_count;
 
+#if GHOST_PRODUCER_NEED
                 IGraphProducer ghost_parallel_graph_producer = new GhostParallelProducer(4321, 50, graph_color);
                 DrivedOscilloscope<Bitmap> drived_ghost_parallel_oscilloscope
                     = new DrivedOscilloscope<Bitmap>(
@@ -90,6 +92,7 @@ namespace OscilloscopeFrameworkTest
                 Thread.Sleep(2_000);
                 timer.Dispose();
                 drived_ghost_parallel_count = save_count;
+#endif
 
                 ConstructorTuple<IPointDrawer> single_point_drawer_constructor
                     = new ConstructorTuple<IPointDrawer>(typeof(OvalPointDrawer), 360, 360);
@@ -110,6 +113,7 @@ namespace OscilloscopeFrameworkTest
                 timer.Dispose();
                 drived_serial_count = save_count;
 
+#if GHOST_PRODUCER_NEED
                 IGraphProducer ghost_serial_graph_producer = new GhostSerialProducer(4321, 50, graph_color);
                 DrivedOscilloscope<Bitmap> drived_ghost_serial_oscilloscope
                     = new DrivedOscilloscope<Bitmap>(
@@ -126,6 +130,7 @@ namespace OscilloscopeFrameworkTest
                 Thread.Sleep(2_000);
                 timer.Dispose();
                 drived_ghost_serial_count = save_count;
+#endif
 
                 IGraphProducer simple_graph_producer = new SimpleProducer(4321, graph_color);
                 ICanvas<Bitmap> canvas = canvas_constructor.NewInstance();

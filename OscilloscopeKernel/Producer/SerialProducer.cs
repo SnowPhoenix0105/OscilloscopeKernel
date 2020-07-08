@@ -1,10 +1,14 @@
-﻿using OscilloscopeKernel.Drawing;
+﻿//#define GHOST_PRODUCER_NEED
+
+using OscilloscopeKernel.Drawing;
 using OscilloscopeKernel.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using OscilloscopeKernel.Exceptions;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace OscilloscopeKernel.Producer
 {
@@ -60,7 +64,7 @@ namespace OscilloscopeKernel.Producer
         }
     }
 
-
+#if GHOST_PRODUCER_NEED
     public class GhostSerialProducer : IGraphProducer
     {
         public bool RequireConcurrentDrawer => false;
@@ -91,29 +95,57 @@ namespace OscilloscopeKernel.Producer
         {
             double x_delta_phase = delta_time / information.XPeriod;
             double y_delta_phase = delta_time / information.YPeriod;
+            double x_phase_step = x_delta_phase / calculate_times;
+            double y_phase_step = y_delta_phase / calculate_times;
+            x_phase_step -= (int)x_phase_step;
+            y_phase_step -= (int)y_phase_step;
             double old_x_phase;
             double old_y_phase;
+            double x_phase;
+            double y_phase;
+            Task draw_old_ghosts;
+
             lock (locker)
             {
+                PositionStruct[] old_ghosts = ghosts;
+
+                draw_old_ghosts = new Task(() =>
+                {
+                    for (int i = 0; i < ghost_number; i++)
+                    {
+                        point_drawer.SetPoint(ghosts[i]);
+                    }
+                    point_drawer.DrawAllPoint(canvas, ghost_color, information.PointSize);
+                });
+                draw_old_ghosts.Start();
+
+                ghosts = new PositionStruct[ghost_number];
                 old_x_phase = saved_x_phase;
                 old_y_phase = saved_y_phase;
                 saved_x_phase += x_delta_phase;
                 saved_y_phase += y_delta_phase;
                 saved_x_phase -= (int)saved_x_phase;
                 saved_y_phase -= (int)saved_y_phase;
-            }
-            double x_phase_step = x_delta_phase / calculate_times;
-            double y_phase_step = y_delta_phase / calculate_times;
-            x_phase_step -= (int)x_phase_step;
-            y_phase_step -= (int)y_phase_step;
-            double x_phase = old_x_phase;
-            double y_phase = old_y_phase;
 
-            for (int i = 0; i < ghost_number; i++)
-            {
-                point_drawer.SetPoint(ghosts[i]);
+                int base_count = calculate_times - ghost_number;
+                x_phase = old_x_phase + base_count * x_phase_step;
+                y_phase = old_y_phase + base_count * y_phase_step;
+                for (int i = 0; i < ghost_number; i++)
+                {
+                    x_phase += x_phase_step;
+                    y_phase += y_phase_step;
+                    if (x_phase >= 1) x_phase -= 1;
+                    if (y_phase >= 1) y_phase -= 1;
+                    information.Position(x_phase, y_phase, out ghosts[i]);
+                }
             }
-            point_drawer.DrawAllPoint(canvas, ghost_color, information.PointSize);
+            x_phase = old_x_phase;
+            y_phase = old_y_phase;
+
+            while (!draw_old_ghosts.IsCompleted)
+            {
+                Thread.Yield();
+            }
 
             for (int i = 0; i < calculate_times - ghost_number; i++)
             {
@@ -126,16 +158,11 @@ namespace OscilloscopeKernel.Producer
             }
             for (int i = 0 ; i < ghost_number; i++)
             {
-                x_phase += x_phase_step;
-                y_phase += y_phase_step;
-                if (x_phase >= 1) x_phase -= 1;
-                if (y_phase >= 1) y_phase -= 1;
-                information.Position(x_phase, y_phase, out ghosts[i]);
                 point_drawer.SetPoint(ghosts[i]);
             }
 
             point_drawer.DrawAllPoint(canvas, graph_color, information.PointSize);
         }
-
     }
+#endif
 }
