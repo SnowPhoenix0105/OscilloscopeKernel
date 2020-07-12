@@ -106,6 +106,8 @@ attribute
 
 * Summary:
   * 
+* Remarks
+  * 
 * Invarient:
 * Getter:
   * 

@@ -118,6 +118,8 @@ namespace OscilloscopeKernel
 
     public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>
     {
+        public bool IsRunning => timer != null;
+
         private Timer timer = null;
 
         public DrivedOscilloscope(

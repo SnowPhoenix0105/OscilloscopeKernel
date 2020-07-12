@@ -15,6 +15,7 @@
 
 * if the method or attribute of a certain class that behave the same as the super-class or behave just as the implemented interface requires, it will not be listed again in the document of this certain class.
 * `private` attribute, field, or method will not be listed. `protected` attribute and method will be special marked at the class's attribute-list or method-list. So, the attributes and methods that are listed without special mark are all `public`.
+* the time unit is defined with [Waves](#Wave\Waves).[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND). the defaute time unit is $\mu s$ but most of Systerm functions use $ms$ as the time unit, be careful!.
 
 
 
@@ -25,10 +26,10 @@ namespace OscilloscopeKernel
 ```
 |type|name|description|
 |:-|:-|:-|
-|class|[MultiThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that can start a new draw-task while the old one has not finish|
-|class|[UndrivedOscilloscope](#UndrivedOscilloscope)|a newable MultiThreadOscilloscope with public [Draw](#Undrivedoscilloscope\Draw)().|
+|abstract class|[MultiThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that can start a new draw-task while the old one has not finish|
+|class|[UndrivedOscilloscope](#UndrivedOscilloscope)|a MultiThreadOscilloscope with public [Draw](#Undrivedoscilloscope\Draw)().|
+|class|[DrivedOscilloscope](#DrivedOscilloscope)|a MultiThreadOscilloscope that can produce graphs periodically.|
 |namespace|[Wave](#Wave)||
-||[](#)||
 ||[](#)||
 ||[](#)||
 ||[](#)||
@@ -151,7 +152,7 @@ public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * methods:
   |name|describtion|
   |:-|:-|
-  |[Draw](#UndrivedOscilloscope\Draw)(double)|call [MultiThreadOscilloscope](#Multithreadoscilloscope).[Draw](#MultiThreadOscilloscope\Draw)() directly.|
+  |void [Draw](#UndrivedOscilloscope\Draw)(double)|call [MultiThreadOscilloscope](#Multithreadoscilloscope).[Draw](#MultiThreadOscilloscope\Draw)() directly.|
 
 ### constructors:
 
@@ -209,8 +210,6 @@ public void Draw(double delta_time);
     * a new graph with type T will be produced and put into [Buffer](#MultiThreadOscilloscope\Buffer)
 
 
-
-
 ## DrivedOscilloscope
 <span id="DrivedOscilloscope"></span>
 
@@ -223,21 +222,20 @@ public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * interfaces: none
 * summary:
   * a multi-thread oscilloscope that contains a built-in timer.
-* remarks
-  * 
+  * it will produce graphs periodically and put them into the [Buffer](#Multithreadoscilloscope\Buffer).
 * constructors:
   |name|describtion|
   |:-|:-|
   |[DrivedOscilloscope](#DrivedOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\> canvas_constructor,ConstructorTuple\<IPointDrawer\> point_drawer_constructor,IGraphProducer graph_producer,IControlPanel control_panel,ConcurrentQueue\<T\> buffer = null)||
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |bool|[IsRunning](#DrivedOscilloscope\IsRunning)|G|marks wheather this oscilloscope is running|
 * methods:
   |name|describtion|
   |:-|:-|
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
+  |void [Start](#DrivedOscilloscope\Start)(int delta_time)|start to produce graphs periodically.|
+  |void [End](#DrivedOscilloscope\End)()|stop this oscilloscope.|
 
 ### constructors:
 
@@ -274,10 +272,73 @@ public DrivedOscilloscope(
     * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
 ---------------------------------------------------------
 
+### attributes:
+
+<span id="DrivedOscilloscope\IsRunning"></span>
+
+```C#
+public bool IsRunning { get; }
+```
+
+* Summary:
+  * marks wheather this oscilloscope is running
+* Remarks
+  * while IsRunning is true, ths oscilloscope will produce a new graph and put it into the [Buffer](#Multithreadoscilloscope\Buffer) periodically.
+* Getter
+
 
 ### methods:
 
+<span id="DrivedOscilloscope\Start"></span>
 
+```C#
+public void Start(int delta_time);
+```
+
+* Summary:
+  * the oscilloscope start to run, which means it will put a new graph into the [Buffer](#Multithreadoscilloscope\Buffer) every `delta_time`.
+* Remarks:
+  * be careful about the time unit of delta_time. the time unit is still difined with [Waves](#Wave\Waves).[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND).
+* Params:
+  * int delta_time: the period that this oscilloscope produce a new graph and put into the [Buffer](#Multithreadoscilloscope\Buffer).
+* Normal-Behaviour:
+  * Pre-Condition:
+    * IsRunning == true
+  * Post-Condition:
+    * stop and then restart to run.
+    * IsRunning == true
+* Normal-Behaviour:
+  * Pre-Condition:
+    * IsRunning == false
+  * Post-Condition:
+    * start to run.
+    * IsRunning == true
+---------------------------------------------------------
+
+
+
+<span id="DrivedOscilloscope\End"></span>
+
+```C#
+public void End()
+```
+
+* Summary:
+  * stop this oscilloscope.
+* Remarks:
+  * if the oscilloscope is not running, nothing will happen.
+* Normal-Behaviour:
+  * Pre-Condition:
+    * IsRunning == true
+  * Post-Condition:
+    * the oscilloscope will stop producing graphs periodically
+    * IsRunning == false
+* Normal-Behaviour:
+  * Pre-Condition:
+    * IsRunning == false
+  * Post-Condition:
+    * nothing will happen
+---------------------------------------------------------
 
 
 
