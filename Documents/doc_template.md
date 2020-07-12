@@ -48,6 +48,8 @@ class & interface
 * interfaces: none
 * summary:
   * 
+* remarks
+  * 
 * constructors:
   |name|describtion|
   |:-|:-|
@@ -131,6 +133,8 @@ method
 ```
 
 * Summary:
+  * 
+* Remarks:
   * 
 * Params:
   * 
