@@ -20,6 +20,9 @@
 
 
 
+
+<div style="page-break-after: always;"></div>
+
 ## OscilloscopeKernel
 <span id="OscilloscopeKernel"></span>
 ```C#
@@ -41,6 +44,9 @@ namespace OscilloscopeKernel
 ||[](#)||
 
 
+
+<div style="page-break-after: always;"></div>
+
 ## SingleThreadOscilloscope
 <span id="SingleThreadOscilloscope"></span>
 
@@ -48,7 +54,7 @@ namespace OscilloscopeKernel
 public abstract class SingleThreadOscilloscope<T>;
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel)
 * supers: none
 * interfaces: none
 * summary:
@@ -123,6 +129,8 @@ protected T Draw(double delta_time);
 
 
 
+<div style="page-break-after: always;"></div>
+
 ## SimpleOscilloscope
 <span id="SimpleOscilloscope"></span>
 
@@ -130,7 +138,7 @@ protected T Draw(double delta_time);
 public class SimpleOscilloscope<T> : SingleThreadOscilloscope<T>;
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel)
 * supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
 * interfaces: none
 * summary:
@@ -202,6 +210,8 @@ public T Draw(double delta_time);
 
 
 
+<div style="page-break-after: always;"></div>
+
 ## TimeCountedOscilloscope
 <span id="TimeCountedOscilloscope"></span>
 
@@ -209,7 +219,7 @@ public T Draw(double delta_time);
 public class TimeCountedOscilloscope<T> : SingleThreadOscilloscope<T>;
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel)
 * supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
 * interfaces: none
 * summary:
@@ -280,6 +290,8 @@ public T Draw();
 
 
 
+
+<div style="page-break-after: always;"></div>
 
 ## MultiThreadOscilloscope
 <span id="MultiThreadOscilloscope"></span>
@@ -379,6 +391,8 @@ protected void Draw(double delta_time);
 
 
 
+<div style="page-break-after: always;"></div>
+
 ## UndrivedOscilloscope
 <span id="UndrivedOscilloscope"></span>
 
@@ -386,7 +400,7 @@ protected void Draw(double delta_time);
 public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel)
 * supers: MultiThreadOscilloscope\<T\>
 * interfaces: none
 * summary:
@@ -457,6 +471,11 @@ public void Draw(double delta_time);
     * a new graph with type T will be produced and put into [Buffer](#MultiThreadOscilloscope\Buffer)
 
 
+
+
+
+<div style="page-break-after: always;"></div>
+
 ## DrivedOscilloscope
 <span id="DrivedOscilloscope"></span>
 
@@ -464,7 +483,7 @@ public void Draw(double delta_time);
 public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel)
 * supers: MultiThreadOscilloscope\<T\>
 * interfaces: none
 * summary:
@@ -602,6 +621,8 @@ public void End()
 
 
 
+
+<div style="page-break-after: always;"></div>
 
 ## Wave
 <span id="Wave"></span>

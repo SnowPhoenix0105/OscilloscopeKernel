@@ -10,10 +10,13 @@
 
 namespace
 
+
+<div style="page-break-after: always;"></div>
+
 ## 
 <span id=""></span>
 ```C#
-namespace OscilloscopeCore
+namespace OscilloscopeKernel
 ```
 |type|name|description|
 |:-|:-|:-|
@@ -36,6 +39,9 @@ namespace OscilloscopeCore
 
 class & interface
 
+
+<div style="page-break-after: always;"></div>
+
 ## 
 <span id=""></span>
 
@@ -43,7 +49,7 @@ class & interface
 
 ```
 
-* namespace: [OscilloscopeCore](#OscilloscopeCore).[]()
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[]()
 * supers: none
 * interfaces: none
 * summary:
@@ -165,3 +171,6 @@ method
 //////////////////
 //////////////////
 //////////////////
+
+<div style="page-break-after: always;"></div>
+
