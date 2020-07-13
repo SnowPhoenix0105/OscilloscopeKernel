@@ -18,6 +18,10 @@ namespace
 ```C#
 namespace OscilloscopeKernel
 ```
+
+Summary:
+* 
+
 |type|name|description|
 |:-|:-|:-|
 ||[](#)||

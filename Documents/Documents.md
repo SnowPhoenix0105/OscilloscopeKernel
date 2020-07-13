@@ -1,13 +1,16 @@
 # Document of ClassLib OscilloscopeKernel
 
 ## Index
-* [Foreword](#Foreword)
-* [OscilloscopeKernel](#OscilloscopeKernel)
-  * [MultiThreadOscilloscope](#MultiThreadOscilloscope)
-  * [Wave](#Wave)
-  * [Drawing](#Drawing)
-  * [Tools](#Tools)
-  * [Producer](#Producer)
+  - [Foreword](#Foreword)
+  - [OscilloscopeKernel](#OscilloscopeKernel)
+  - [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+  - [SimpleOscilloscope](#SimpleOscilloscope)
+  - [TimeCountedOscilloscope](#TimeCountedOscilloscope)
+  - [MultiThreadOscilloscope](#MultiThreadOscilloscope)
+  - [UndrivedOscilloscope](#UndrivedOscilloscope)
+  - [DrivedOscilloscope](#DrivedOscilloscope)
+  - [Wave](#Wave)
+  - [](#)
 
 
 ## Foreword
@@ -28,6 +31,11 @@
 ```C#
 namespace OscilloscopeKernel
 ```
+
+Summary:
+* main part of oscilloscope-simulation.
+* developed in .NET Standard.
+
 |type|name|description|
 |:-|:-|:-|
 |abstract class|[SingleThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that cannot start a new draw-task while the old one has not finish|
@@ -37,11 +45,11 @@ namespace OscilloscopeKernel
 |class|[UndrivedOscilloscope](#UndrivedOscilloscope)|a MultiThreadOscilloscope with public [Draw](#Undrivedoscilloscope\Draw)().|
 |class|[DrivedOscilloscope](#DrivedOscilloscope)|a MultiThreadOscilloscope that can produce graphs periodically.|
 |namespace|[Wave](#Wave)||
-||[](#)||
-||[](#)||
-||[](#)||
-||[](#)||
-||[](#)||
+|namespace|[](#)||
+|namespace|[](#)||
+|namespace|[](#)||
+|namespace|[](#)||
+|namespace|[](#)||
 
 
 
@@ -369,10 +377,12 @@ public ConcurrentQueue<T> Buffer { get; }
 * Summary:
   * the productions of this oscilloscope will be put into this buffer.
   * the reference of buffer will never change.
+
 ---------------------------------------------------------
 
-### methods:
 
+
+### methods:
 
 <span id="MultiThreadOscilloscope\Draw"></span>
 
@@ -629,6 +639,10 @@ public void End()
 ```C#
 namespace OscilloscopeKernel.Wave
 ```
+
+Summary:
+* 
+
 |type|name|description|
 |:-|:-|:-|
 ||[](#)||
@@ -636,3 +650,197 @@ namespace OscilloscopeKernel.Wave
 ||[](#)||
 ||[](#)||
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+## Tools
+<span id="Tools"></span>
+```C#
+namespace OscilloscopeKernel.Tools
+```
+
+Summary:
+* 
+
+|type|name|description|
+|:-|:-|:-|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+## Drawing
+<span id="Drawing"></span>
+```C#
+namespace OscilloscopeKernel.Drawing
+```
+
+Summary:
+* 
+
+|type|name|description|
+|:-|:-|:-|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+## Producer
+<span id="Producer"></span>
+```C#
+namespace OscilloscopeKernel.Producer
+```
+
+Summary:
+* 
+
+|type|name|description|
+|:-|:-|:-|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+## Exceptions
+<span id="Exceptions"></span>
+```C#
+namespace OscilloscopeKernel.Exceptions
+```
+
+Summary:
+* 
+
+|type|name|description|
+|:-|:-|:-|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+## OscilloscopeFramework
+<span id="OscilloscopeFramework"></span>
+```C#
+namespace OscilloscopeFramework
+```
+
+Summary:
+* 
+
+|type|name|description|
+|:-|:-|:-|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
