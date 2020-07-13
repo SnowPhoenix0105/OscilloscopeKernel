@@ -16,7 +16,7 @@
 ## Foreword
 <span id="Foreword"></span>
 
-* if the method or attribute of a certain class that behave the same as the super-class or behave just as the implemented interface requires, it will not be listed again in the document of this certain class.
+* if the method or attribute of a certain class that behave the same as the super-class or behave just as the implemented interface requires, it will still be listed again in the document of this certain class, but no details except a `see also`.
 * `private` attribute, field, or method will not be listed. `protected` attribute and method will be special marked at the class's attribute-list or method-list. So, the attributes and methods that are listed without special mark are all `public`.
 * `protected` and `public` has no difference when it comes to the constructor of a abstract class, so `protected` will not be special marked on this occasion.
 * the time unit is defined with [Waves](#Wave\Waves).[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND). the defaute time unit is $\mu s$ but most of Systerm functions use $ms$ as the time unit, be careful!.
@@ -641,22 +641,120 @@ namespace OscilloscopeKernel.Wave
 ```
 
 Summary:
-* 
+* tools to describe electric waves with time and voltage.
 
 |type|name|description|
 |:-|:-|:-|
+|interface|[IWave](#IWave)||
 ||[](#)||
 ||[](#)||
 ||[](#)||
-||[](#)||
 
 
 
 
 
+<div style="page-break-after: always;"></div>
+
+## 
+<span id="IWave"></span>
+
+```C#
+    public interface IWave
+    {
+        double MeanVoltage { get; }
+
+        int Period { get; }
+
+        double Voltage(double phase);
+    }
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* supers: none
+* interfaces: none
+* summary:
+  * describe a periodic wave with time, phase and voltage.
+* remarks
+  * every object that implement this interface should be immutable- object. if you want a wave that can be changed, you'd better not let it implement IWave. you could add a `GetStateShot()` method to return an IWave at certain time, just like how [WaveFixer](#Wave\WaveFixer) do.
+  * this wave can be described with a function $f(t)$. the voltage at time $t$ is $f(t)$, and $\exist T, s.t.$ $f(t) = f(t+T)$
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#IWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#IWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#IWave\Voltage)(double)|return the voltage of this wave with certain phase|
+
+
+### attributes:
+
+
+<span id="IWave\MeanVoltage"></span>
+
+```C#
+double MeanVoltage { get; }
+```
+
+* Summary:
+  * the mean voltage of this wave.
+* Remarks
+  * definition: ${\rm MeanVoltage}=\int_0^1 {\rm Voltage}(p){\rm d}p$
+  * [Waves](#Wave\Waves).[CalculateMeanVoltage](#Wave\Waves\CalculateMeanVoltage)() can calculate the meanvoltage with difinition.
+* Invarient:
+  * ${\rm MeanVoltage}=\int_0^1 {\rm Voltage}(p){\rm d}p$
+* Getter
+---------------------------------------------------------
+
+
+<span id="Wave\IWave\Period"></span>
+
+```C#
+int Period { get; }
+```
+
+* Summary:
+  * the period of this wave.
+* Remarks
+  * definition: $\forall time, phase={t \over {\rm Period}}$ ${\rm mod}$ $1$
+  * the voltage at time $t$ is the same as the voltage at time $t + {\rm Period}$
+* Getter
+---------------------------------------------------------
+
+### methods:
 
 
 
+
+<span id="Wave\IWave\Voltage"></span>
+
+```C#
+double Voltage(double phase);
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
 
 
 
