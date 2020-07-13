@@ -15,6 +15,7 @@
 
 * if the method or attribute of a certain class that behave the same as the super-class or behave just as the implemented interface requires, it will not be listed again in the document of this certain class.
 * `private` attribute, field, or method will not be listed. `protected` attribute and method will be special marked at the class's attribute-list or method-list. So, the attributes and methods that are listed without special mark are all `public`.
+* `protected` and `public` has no difference when it comes to the constructor of a abstract class, so `protected` will not be special marked on this occasion.
 * the time unit is defined with [Waves](#Wave\Waves).[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND). the defaute time unit is $\mu s$ but most of Systerm functions use $ms$ as the time unit, be careful!.
 
 
@@ -26,6 +27,9 @@ namespace OscilloscopeKernel
 ```
 |type|name|description|
 |:-|:-|:-|
+|abstract class|[SingleThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that cannot start a new draw-task while the old one has not finish|
+|class|[SimpleOscilloscope](#SimpleOscilloscope)|a SingleThreadOscilloscope with public [Draw](#SimpleOscilloscope\Draw)().|
+|class|[TimeCountedOscilloscope](#TimeCountedOscilloscope)|a SingleThreadOscilloscope with public [Draw](#TimeCountedOscilloscope\Draw)() and a built-in watch, which means it doesn't need to delta_time as input.|
 |abstract class|[MultiThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that can start a new draw-task while the old one has not finish|
 |class|[UndrivedOscilloscope](#UndrivedOscilloscope)|a MultiThreadOscilloscope with public [Draw](#Undrivedoscilloscope\Draw)().|
 |class|[DrivedOscilloscope](#DrivedOscilloscope)|a MultiThreadOscilloscope that can produce graphs periodically.|
@@ -35,6 +39,247 @@ namespace OscilloscopeKernel
 ||[](#)||
 ||[](#)||
 ||[](#)||
+
+
+## SingleThreadOscilloscope
+<span id="SingleThreadOscilloscope"></span>
+
+```C#
+public abstract class SingleThreadOscilloscope<T>;
+```
+
+* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* supers: none
+* interfaces: none
+* summary:
+  * an oscilloscope that cannot start a new draw-task while the old one has not finished.
+  * T is the output type of this oscilloscope.
+* remarks
+  * this is a abstract class, if you want to use it, please try [SimpleOscilloscope](#SimpleOscilloscope) or [TimeCountedOscilloscope](#TimeCountedOscilloscope).
+  * calling [Draw()](#SingleThreadOscilloscope\Draw) to produce and get a new graph.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double delta_time)|produce and get a new graph.|
+
+### constructors:
+
+
+<span id="SingleThreadOscilloscope\Constructor1"></span>
+
+```C#
+protected SingleThreadOscilloscope(
+            ICanvas<T> canvas, 
+            IPointDrawer point_drawer, 
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
+```
+
+* Summary:
+  * create a new oscilloscope.
+* Remarks:
+  * every input objects should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
+* Params:
+  * [ICanvas](#Drawing\ICanvas)\<T\> canvas: the canvas that produce the graph.
+  * [IPointDrawer](#Drawing\IPointDrawer) point_drawer: the point-drawer the producer will produce the graph with.
+  * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
+  * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
+  * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
+* Normal-Behaviour:
+  * Pre-Condition:
+    * canvas.GraphSize == point_drawer.GraphSize
+    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+* Exception-Behaviour:
+  * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
+    * canvas.GraphSize != point_drawer.GraphSize
+  * Exception: OscillocopeBuildException
+    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+-----------------------
+
+### methods:
+
+
+<span id="SingleThreadOscilloscope\Draw"></span>
+
+```C#
+protected T Draw(double delta_time);
+```
+
+* Summary:
+  * get the current state of the panel and produce a new graph accoding to this.then return the graph while finish.
+* Params:
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+* Normal-Behaviour:
+  * Post-Condition:
+    * a new graph with type T will be produced and return.
+---------------------------------------------------------
+
+
+
+
+## SimpleOscilloscope
+<span id="SimpleOscilloscope"></span>
+
+```C#
+public class SimpleOscilloscope<T> : SingleThreadOscilloscope<T>;
+```
+
+* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+* interfaces: none
+* summary:
+  * the only difference with [SingleThreadOscilloscope](#SingleThreadOscilloscope) is the method [Draw](#SimpleOscilloscope\Draw)() is puiblic.
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double delta_time)|produce and get a new graph.|
+
+### constructors:
+
+
+<span id="SimpleOscilloscope\Constructor1"></span>
+
+```C#
+protected SimpleOscilloscope(
+            ICanvas<T> canvas, 
+            IPointDrawer point_drawer, 
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
+```
+
+* Summary:
+  * create a new oscilloscope.
+* Remarks:
+  * every input objects should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
+* Params:
+  * [ICanvas](#Drawing\ICanvas)\<T\> canvas: the canvas that produce the graph.
+  * [IPointDrawer](#Drawing\IPointDrawer) point_drawer: the point-drawer the producer will produce the graph with.
+  * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
+  * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
+  * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
+* Normal-Behaviour:
+  * Pre-Condition:
+    * canvas.GraphSize == point_drawer.GraphSize
+    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+* Exception-Behaviour:
+  * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
+    * canvas.GraphSize != point_drawer.GraphSize
+  * Exception: OscillocopeBuildException
+    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+-----------------------
+
+### methods:
+
+
+<span id="SimpleOscilloscope\Draw"></span>
+
+```C#
+public T Draw(double delta_time);
+```
+
+* Summary:
+  * it will call and return the result of [SingleThreadOscilloscope](#SingleThreadOscilloscope).[Draw](#Singlethreadoscilloscope\Draw) directly.
+  * get the current state of the panel and produce a new graph accoding to this.then return the graph while finish.
+* Params:
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+* Normal-Behaviour:
+  * Post-Condition:
+    * a new graph with type T will be produced and return.
+---------------------------------------------------------
+
+
+
+
+
+## TimeCountedOscilloscope
+<span id="TimeCountedOscilloscope"></span>
+
+```C#
+public class TimeCountedOscilloscope<T> : SingleThreadOscilloscope<T>;
+```
+
+* namespace: [OscilloscopeCore](#OscilloscopeCore)
+* supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+* interfaces: none
+* summary:
+  * the only difference with [SimpleOscilloscope](#SimpleOscilloscope) is the method [Draw](#TimeCountedOscilloscope\Draw)() will use a built-in watch to get delta-time.
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |protected T [Draw](#SingleThreadOscilloscope\Draw)()|produce and get a new graph.|
+
+### constructors:
+
+
+<span id="TimeCountedOscilloscope\Constructor1"></span>
+
+```C#
+protected TimeCountedOscilloscope(
+            ICanvas<T> canvas, 
+            IPointDrawer point_drawer, 
+            IGraphProducer graph_producer,
+            IControlPanel control_panel)
+```
+
+* Summary:
+  * create a new oscilloscope.
+* Remarks:
+  * every input objects should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
+* Params:
+  * [ICanvas](#Drawing\ICanvas)\<T\> canvas: the canvas that produce the graph.
+  * [IPointDrawer](#Drawing\IPointDrawer) point_drawer: the point-drawer the producer will produce the graph with.
+  * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
+  * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
+  * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
+* Normal-Behaviour:
+  * Pre-Condition:
+    * canvas.GraphSize == point_drawer.GraphSize
+    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+* Exception-Behaviour:
+  * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
+    * canvas.GraphSize != point_drawer.GraphSize
+  * Exception: OscillocopeBuildException
+    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+-----------------------
+
+### methods:
+
+
+<span id="TimeCountedOscilloscope\Draw"></span>
+
+```C#
+public T Draw();
+```
+
+* Summary:
+  * it will get delta_time with built-in watch.
+  * it will call and return the result of [SingleThreadOscilloscope](#SingleThreadOscilloscope).[Draw](#Singlethreadoscilloscope\Draw) directly.
+  * get the current state of the panel and produce a new graph accoding to this.then return the graph while finish.
+* Params:
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+* Normal-Behaviour:
+  * Post-Condition:
+    * a new graph with type T will be produced and return.
+---------------------------------------------------------
+
+
+
 
 ## MultiThreadOscilloscope
 <span id="MultiThreadOscilloscope"></span>
@@ -47,12 +292,12 @@ public abstract class MultiThreadOscilloscope<T>;
 * supers: none
 * interfaces: none
 * summary:
-  * an oscilloscope that can start a new draw-task while the old one has not finish.
+  * an oscilloscope that can start a new draw-task while the old one has not finished.
   * T is the output type of this oscilloscope.
 * remarks
   * this is a abstract class, if you want to use it, please try [UndrivedOscilloscope](#UndrivedOscilloscope) or [DrivedOscilloscope](#DrivedOscilloscope).
   * calling [Draw()](#MultiThreadOscilloscope\Draw) to start a draw-task, and after the draw-task is complete, a new graph will be put into [Buffer](#MultiThreadOscilloscope\Buffer).
-  * no attribute will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
 * constructors:
   |name|describtion|
   |:-|:-|
@@ -83,21 +328,22 @@ public MultiThreadOscilloscope(
   * create a new Oscilloscope.
 * Remarks:
   * the control_panel and graph_producer should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
 * Params:
   * [ConstructorTuple](#Tools\ConstructorTuple)\<[ICanvas](#Drawing\ICanvas)\<T\>\> canvas_constructor: a ConstructorTuple that can create new ICanvas.
-  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> canvas_constructor: a ConstructorTuple that can create new IPointDrawer.
+  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> point_drawer_constructor: a ConstructorTuple that can create new IPointDrawer.
   * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
   * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
   * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
 * Normal-Behaviour:
   * Pre-Condition:
     * canvas_constructor.NewInstance().GraphSize == point_drawer_constructor.NewInstance().GraphSize
-    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+    * !graph_producer.RequireConcurrentDrawer || point_drawer_constructor.NewInstance().IsConcurrent
 * Exception-Behaviour:
   * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
-    * canvas.GraphSize != point_drawer.GraphSize
+    * canvas_constructor.NewInstance().GraphSize != point_drawer_constructor.NewInstance().GraphSize
   * Exception: OscillocopeBuildException
-    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+    * graph_producer.RequireConcurrentDrawer && !point_drawer_constructor.NewInstance().IsConcurrent
 ---------------------------------------------------------
 
 ### attributes:
@@ -144,7 +390,7 @@ public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * supers: MultiThreadOscilloscope\<T\>
 * interfaces: none
 * summary:
-  * the only difference between [MultiThreadOscilloscope](#MultiThreadOscilloscope) is that the [Draw](#MultiThreadOscilloscope\Draw)() of [UndrivedOscilloscope](#UndrivedOscilloscope) is public.
+  * the only difference with [MultiThreadOscilloscope](#MultiThreadOscilloscope) is that the [Draw](#MultiThreadOscilloscope\Draw)() of [UndrivedOscilloscope](#UndrivedOscilloscope) is public.
 * constructors:
   |name|describtion|
   |:-|:-|
@@ -173,21 +419,22 @@ public UndrivedOscilloscope(
   * the same as [MultiThreadOscilloscope](#MultiThreadOscilloscope\Constructor1).
 * Remarks:
   * the control_panel and graph_producer should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
 * Params:
   * [ConstructorTuple](#Tools\ConstructorTuple)\<[ICanvas](#Drawing\ICanvas)\<T\>\> canvas_constructor: a ConstructorTuple that can create new ICanvas.
-  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> canvas_constructor: a ConstructorTuple that can create new IPointDrawer.
+  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> point_drawer_constructor: a ConstructorTuple that can create new IPointDrawer.
   * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
   * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
   * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
 * Normal-Behaviour:
   * Pre-Condition:
     * canvas_constructor.NewInstance().GraphSize == point_drawer_constructor.NewInstance().GraphSize
-    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+    * !graph_producer.RequireConcurrentDrawer || point_drawer_constructor.NewInstance().IsConcurrent
 * Exception-Behaviour:
   * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
-    * canvas.GraphSize != point_drawer.GraphSize
+    * canvas_constructor.NewInstance().GraphSize != point_drawer_constructor.NewInstance().GraphSize
   * Exception: OscillocopeBuildException
-    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+    * graph_producer.RequireConcurrentDrawer && !point_drawer_constructor.NewInstance().IsConcurrent
 ---------------------------------------------------------
 
 
@@ -255,21 +502,22 @@ public DrivedOscilloscope(
   * the same as [MultiThreadOscilloscope](#MultiThreadOscilloscope\Constructor1).
 * Remarks:
   * the control_panel and graph_producer should not be used by other oscilloscope at the same time.
+  * no attribute or method will be provided to get the panel that this oscilloscope is using, so you need to handle the reference of it by yourself.
 * Params:
   * [ConstructorTuple](#Tools\ConstructorTuple)\<[ICanvas](#Drawing\ICanvas)\<T\>\> canvas_constructor: a ConstructorTuple that can create new ICanvas.
-  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> canvas_constructor: a ConstructorTuple that can create new IPointDrawer.
+  * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> point_drawer_constructor: a ConstructorTuple that can create new IPointDrawer.
   * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
   * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
   * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
 * Normal-Behaviour:
   * Pre-Condition:
     * canvas_constructor.NewInstance().GraphSize == point_drawer_constructor.NewInstance().GraphSize
-    * !graph_producer.RequireConcurrentDrawer || point_drawer.IsConcurrent
+    * !graph_producer.RequireConcurrentDrawer || point_drawer_constructor.NewInstance().IsConcurrent
 * Exception-Behaviour:
   * Exception: OscillocopeBuildException with inner-exception: DifferentGraphSizeException
-    * canvas.GraphSize != point_drawer.GraphSize
+    * canvas_constructor.NewInstance().GraphSize != point_drawer_constructor.NewInstance().GraphSize
   * Exception: OscillocopeBuildException
-    * graph_producer.RequireConcurrentDrawer && !point_drawer.IsConcurrent
+    * graph_producer.RequireConcurrentDrawer && !point_drawer_constructor.NewInstance().IsConcurrent
 ---------------------------------------------------------
 
 ### attributes:

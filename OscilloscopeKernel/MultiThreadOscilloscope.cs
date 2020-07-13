@@ -26,7 +26,7 @@ namespace OscilloscopeKernel
         private readonly ConcurrentQueue<ICanvas<T>> free_canvas = new ConcurrentQueue<ICanvas<T>>();
         private readonly ConcurrentQueue<IPointDrawer> free_point_drawer = new ConcurrentQueue<IPointDrawer>();
 
-        public MultiThreadOscilloscope(
+        protected MultiThreadOscilloscope(
             ConstructorTuple<ICanvas<T>> canvas_constructor,
             ConstructorTuple<IPointDrawer> point_drawer_constructor,
             IGraphProducer graph_producer,
