@@ -53,7 +53,7 @@ Summary:
 
 |type|name|description|
 |:-|:-|:-|
-|abstract class|[SingleThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that cannot start a new draw-task while the old one has not finish|
+|abstract class|[SingleThreadOscilloscope](#SingleThreadOscilloscope)|an abstract class thar describe an oscilloscope that cannot start a new draw-task while the old one has not finish|
 |class|[SimpleOscilloscope](#SimpleOscilloscope)|a SingleThreadOscilloscope with public [Draw](#SimpleOscilloscope\Draw)().|
 |class|[TimeCountedOscilloscope](#TimeCountedOscilloscope)|a SingleThreadOscilloscope with public [Draw](#TimeCountedOscilloscope\Draw)() and a built-in watch, which means it doesn't need to delta_time as input.|
 |abstract class|[MultiThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that can start a new draw-task while the old one has not finish|
