@@ -1,33 +1,48 @@
 # Document of ClassLib OscilloscopeKernel
 
 ## Index
-  - [Foreword](#Foreword)
-  - [OscilloscopeKernel](#OscilloscopeKernel)
-  - [SingleThreadOscilloscope](#SingleThreadOscilloscope)
-  - [SimpleOscilloscope](#SimpleOscilloscope)
-  - [TimeCountedOscilloscope](#TimeCountedOscilloscope)
-  - [MultiThreadOscilloscope](#MultiThreadOscilloscope)
-  - [UndrivedOscilloscope](#UndrivedOscilloscope)
-  - [DrivedOscilloscope](#DrivedOscilloscope)
-  - [Wave](#Wave)
-  - [](#)
+  * [Foreword](#Foreword)
+  * [OscilloscopeKernel](#OscilloscopeKernel)
+  * [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+  * [SimpleOscilloscope](#SimpleOscilloscope)
+  * [TimeCountedOscilloscope](#TimeCountedOscilloscope)
+  * [MultiThreadOscilloscope](#MultiThreadOscilloscope)
+  * [UndrivedOscilloscope](#UndrivedOscilloscope)
+  * [DrivedOscilloscope](#DrivedOscilloscope)
+  * [Wave](#Wave)
 
+
+<span id="Foreword"></span>
 
 ## Foreword
-<span id="Foreword"></span>
 
 * if the method or attribute of a certain class that behave the same as the super-class or behave just as the implemented interface requires, it will still be listed again in the document of this certain class, but no details except a `see also`.
 * `private` attribute, field, or method will not be listed. `protected` attribute and method will be special marked at the class's attribute-list or method-list. So, the attributes and methods that are listed without special mark are all `public`.
 * `protected` and `public` has no difference when it comes to the constructor of a abstract class, so `protected` will not be special marked on this occasion.
+* static method and static attribute will be special marked, except the methods and attributes of a static class.
 * the time unit is defined with [Waves](#Wave\Waves).[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND). the defaute time unit is $\mu s$ but most of Systerm functions use $ms$ as the time unit, be careful!.
+* for attributes-list of classes or interfaces, in accessor row:
+  |symbol|meaning|
+  |:-|:-|
+  |G|only has a public Getter|
+  |S|only has a public Setter|
+  |g|only has a protected Getter|
+  |s|only has a protected Setter|
+  |GS|has both public Getter and public Setter|
+  |gS|has protected Getter and public Setter|
+  |Gs|has public Getter and protected Setter|
+  |readonly|is a readonly field (if a field is not readonly, this classlib make sure it is private)|
+* parameter's type, but name, will not provided in the method-list in a class or interface. if you need the name of parameters click the method name or scroll down to see the details of this method. 
 
 
 
 
 <div style="page-break-after: always;"></div>
 
-## OscilloscopeKernel
 <span id="OscilloscopeKernel"></span>
+
+## OscilloscopeKernel
+
 ```C#
 namespace OscilloscopeKernel
 ```
@@ -44,19 +59,19 @@ Summary:
 |abstract class|[MultiThreadOscilloscope](#MultiThreadOscilloscope)|an abstract class thar describe an oscilloscope that can start a new draw-task while the old one has not finish|
 |class|[UndrivedOscilloscope](#UndrivedOscilloscope)|a MultiThreadOscilloscope with public [Draw](#Undrivedoscilloscope\Draw)().|
 |class|[DrivedOscilloscope](#DrivedOscilloscope)|a MultiThreadOscilloscope that can produce graphs periodically.|
-|namespace|[Wave](#Wave)||
-|namespace|[](#)||
-|namespace|[](#)||
-|namespace|[](#)||
-|namespace|[](#)||
-|namespace|[](#)||
+|namespace|[Wave](#Wave)|tools to describe electric waves with time and voltage.|
+|namespace|[Tools](#Tools)||
+|namespace|[Drawing](#Drawing)||
+|namespace|[Producer](#Producer)||
+|namespace|[Exceptions](#Exceptions)||
 
 
 
 <div style="page-break-after: always;"></div>
 
-## SingleThreadOscilloscope
 <span id="SingleThreadOscilloscope"></span>
+
+## SingleThreadOscilloscope
 
 ```C#
 public abstract class SingleThreadOscilloscope<T>;
@@ -75,11 +90,11 @@ public abstract class SingleThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas\<T\>, IPointDrawer,IGraphProducer,IControlPanel)||
 * methods:
   |name|describtion|
   |:-|:-|
-  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double delta_time)|produce and get a new graph.|
+  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double)|produce and get a new graph.|
 
 ### constructors:
 
@@ -128,8 +143,10 @@ protected T Draw(double delta_time);
 * Summary:
   * get the current state of the panel and produce a new graph accoding to this.then return the graph while finish.
 * Params:
-  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method. it should not be negative.
 * Normal-Behaviour:
+  * Pre-condition:
+    * delta_time >= 0.
   * Post-Condition:
     * a new graph with type T will be produced and return.
 ---------------------------------------------------------
@@ -139,8 +156,9 @@ protected T Draw(double delta_time);
 
 <div style="page-break-after: always;"></div>
 
-## SimpleOscilloscope
 <span id="SimpleOscilloscope"></span>
+
+## SimpleOscilloscope
 
 ```C#
 public class SimpleOscilloscope<T> : SingleThreadOscilloscope<T>;
@@ -154,11 +172,11 @@ public class SimpleOscilloscope<T> : SingleThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas\<T\>, IPointDrawer,IGraphProducer,IControlPanel)||
 * methods:
   |name|describtion|
   |:-|:-|
-  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double delta_time)|produce and get a new graph.|
+  |protected T [Draw](#SingleThreadOscilloscope\Draw)(double)|produce and get a new graph.|
 
 ### constructors:
 
@@ -208,8 +226,10 @@ public T Draw(double delta_time);
   * it will call and return the result of [SingleThreadOscilloscope](#SingleThreadOscilloscope).[Draw](#Singlethreadoscilloscope\Draw) directly.
   * get the current state of the panel and produce a new graph accoding to this.then return the graph while finish.
 * Params:
-  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method. it should not be negative.
 * Normal-Behaviour:
+  * Pre-condition:
+    * delta_time >= 0.
   * Post-Condition:
     * a new graph with type T will be produced and return.
 ---------------------------------------------------------
@@ -220,8 +240,9 @@ public T Draw(double delta_time);
 
 <div style="page-break-after: always;"></div>
 
-## TimeCountedOscilloscope
 <span id="TimeCountedOscilloscope"></span>
+
+## TimeCountedOscilloscope
 
 ```C#
 public class TimeCountedOscilloscope<T> : SingleThreadOscilloscope<T>;
@@ -235,7 +256,7 @@ public class TimeCountedOscilloscope<T> : SingleThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas<T> canvas, IPointDrawer point_drawer, IGraphProducer graph_producer,IControlPanel control_panel)||
+  |[SingleThreadOscilloscope](#SingleThreadOscilloscope\Constructor1)(ICanvas\<T\>, IPointDrawer,IGraphProducer,IControlPanel)||
 * methods:
   |name|describtion|
   |:-|:-|
@@ -301,8 +322,9 @@ public T Draw();
 
 <div style="page-break-after: always;"></div>
 
-## MultiThreadOscilloscope
 <span id="MultiThreadOscilloscope"></span>
+
+## MultiThreadOscilloscope
 
 ```C#
 public abstract class MultiThreadOscilloscope<T>;
@@ -321,7 +343,7 @@ public abstract class MultiThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[MultiThreadOscilloscope](#MultiThreadOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\> canvas_constructor,ConstructorTuple\<IPointDrawer\> point_drawer_constructor,IRulerDrawer ruler_drawer,IGraphProducer graph_producer,IControlPanel control_panel,ConcurrentQueue\<T\> buffer = null)||
+  |[MultiThreadOscilloscope](#MultiThreadOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\>, ConstructorTuple\<IPointDrawer\>, IGraphProducer, IControlPanel\[, ConcurrentQueue\<T\>=null\])||
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
@@ -354,7 +376,7 @@ public MultiThreadOscilloscope(
   * [ConstructorTuple](#Tools\ConstructorTuple)\<[IPointDrawer](#Drawing\IPointDrawer)\> point_drawer_constructor: a ConstructorTuple that can create new IPointDrawer.
   * [IGraphProducer](#Producer\IGraphProducer) graph_producer: a certain GraphProducer, MultiThreadOscilloscope requirs a concurrent producer, which means producer.[Produce](#Drawing\IGraphProducer\Produce)() can be called by different thread.
   * [IControlPanel](#Producer\IControlPanel) control_panel: the user-interface of this oscilloscope.
-  * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope, if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
+  * ConcurrentQueue\<T\> buffer: the buffer of this oscilloscope. if null, a new ConcurrentQueue will be created as the buffer, and then you could get it with attribute [Buffer](#MultiThreadOscilloscope\Buffer).
 * Normal-Behaviour:
   * Pre-Condition:
     * canvas_constructor.NewInstance().GraphSize == point_drawer_constructor.NewInstance().GraphSize
@@ -393,8 +415,10 @@ protected void Draw(double delta_time);
 * Summary:
   * get the current state of the panel and produce a new graph accoding to this.then put the new graph into [Buffer](MultiThreadOscilloscope\Buffer)
 * Params:
-  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method. it should not be negative.
 * Normal-Behaviour:
+  * Pre-condition:
+    * delta_time >= 0.
   * Post-Condition:
     * a new graph with type T will be produced and put into [Buffer](#MultiThreadOscilloscope\Buffer)
 
@@ -403,8 +427,9 @@ protected void Draw(double delta_time);
 
 <div style="page-break-after: always;"></div>
 
-## UndrivedOscilloscope
 <span id="UndrivedOscilloscope"></span>
+
+## UndrivedOscilloscope
 
 ```C#
 public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
@@ -418,7 +443,7 @@ public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[UndrivedOscilloscope](#)(ConstructorTuple\<ICanvas\<T\>\> canvas_constructor,ConstructorTuple\<IPointDrawer\> point_drawer_constructor,IGraphProducer graph_producer,IControlPanel control_panel,ConcurrentQueue\<T\> buffer = null)||
+  |[UndrivedOscilloscope](#UndrivedOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\>, ConstructorTuple\<IPointDrawer\>, IGraphProducer, IControlPanel\[, ConcurrentQueue\<T\>=null\])||
 * methods:
   |name|describtion|
   |:-|:-|
@@ -475,8 +500,10 @@ public void Draw(double delta_time);
   * it will call [MultiThreadOscilloscope](#Multithreadoscilloscope).[Draw](#MultiThreadOscilloscope\Draw)() directly.
   * get the current state of the panel and produce a new graph accoding to this.then put the new graph into [Buffer](MultiThreadOscilloscope\Buffer)
 * Params:
-  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method.
+  * double delta_time: the time during which the point will be drawn on the graph. in short you'd better delivery the time span from the latest call of this method. it should not be negative.
 * Normal-Behaviour:
+  * Pre-condition:
+    * delta_time >= 0.
   * Post-Condition:
     * a new graph with type T will be produced and put into [Buffer](#MultiThreadOscilloscope\Buffer)
 
@@ -486,8 +513,9 @@ public void Draw(double delta_time);
 
 <div style="page-break-after: always;"></div>
 
-## DrivedOscilloscope
 <span id="DrivedOscilloscope"></span>
+
+## DrivedOscilloscope
 
 ```C#
 public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
@@ -502,7 +530,7 @@ public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[DrivedOscilloscope](#DrivedOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\> canvas_constructor,ConstructorTuple\<IPointDrawer\> point_drawer_constructor,IGraphProducer graph_producer,IControlPanel control_panel,ConcurrentQueue\<T\> buffer = null)||
+  |[DrivedOscilloscope](#DrivedOscilloscope\Constructor1)(ConstructorTuple\<ICanvas\<T\>\>, ConstructorTuple\<IPointDrawer\>, IGraphProducer, IControlPanel\[, ConcurrentQueue\<T\>=null\])||
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
@@ -510,7 +538,7 @@ public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 * methods:
   |name|describtion|
   |:-|:-|
-  |void [Start](#DrivedOscilloscope\Start)(int delta_time)|start to produce graphs periodically.|
+  |void [Start](#DrivedOscilloscope\Start)(int)|start to produce graphs periodically.|
   |void [End](#DrivedOscilloscope\End)()|stop this oscilloscope.|
 
 ### constructors:
@@ -645,7 +673,13 @@ Summary:
 
 |type|name|description|
 |:-|:-|:-|
-|interface|[IWave](#IWave)||
+|interface|[IWave](#Wave\IWave)|describe a periodic wave with time, phase and voltage.|
+|static class|[Waves](#Wave\Waves)|providing basics operations for IWave.|
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
+||[](#)||
 ||[](#)||
 ||[](#)||
 ||[](#)||
@@ -656,8 +690,9 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-## 
-<span id="IWave"></span>
+<span id="Wave\IWave"></span>
+
+## IWave
 
 ```C#
     public interface IWave
@@ -676,8 +711,10 @@ Summary:
 * summary:
   * describe a periodic wave with time, phase and voltage.
 * remarks
-  * every object that implement this interface should be immutable- object. if you want a wave that can be changed, you'd better not let it implement IWave. you could add a `GetStateShot()` method to return an IWave at certain time, just like how [WaveFixer](#Wave\WaveFixer) do.
-  * this wave can be described with a function $f(t)$. the voltage at time $t$ is $f(t)$, and $\exist T, s.t.$ $f(t) = f(t+T)$
+  * every object that implement this interface should be **immutable** object. 
+  * if you want to change a wave, you can build a special class implementing IWave, whose constructor receive an IWave object as origin-wave. just like how [WaveReverser](#Wave\WaveReverser) do.
+  * if you want a wave variable, you'd better not let it implement IWave. you could add a `GetStateShot()` method to return an IWave at certain time, just like how [WaveFixer](#Wave\WaveFixer) do.
+  * this wave can be described with a function $f(t)$. the voltage at time $t$ is $f(t)$. $\exist S_T, s.t.$ $\forall T \in S_T,f(t) = f(t+T)$, then we define the period of this wave as $T = min(S_T)$, define the phase of this wave at time $t$ as $p={t \over T}$ ${\rm mod}$ $1$. in  `IWave`, we use [Period](#Wave\IWave\Period) to describe $T$ and use [Voltage](#Wave\IWave\Voltage)(double phase) to describe $f_p(p) = f(p \cdot T)$.
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
@@ -708,7 +745,6 @@ double MeanVoltage { get; }
 * Getter
 ---------------------------------------------------------
 
-
 <span id="Wave\IWave\Period"></span>
 
 ```C#
@@ -718,15 +754,11 @@ int Period { get; }
 * Summary:
   * the period of this wave.
 * Remarks
-  * definition: $\forall time, phase={t \over {\rm Period}}$ ${\rm mod}$ $1$
   * the voltage at time $t$ is the same as the voltage at time $t + {\rm Period}$
 * Getter
 ---------------------------------------------------------
 
 ### methods:
-
-
-
 
 <span id="Wave\IWave\Voltage"></span>
 
@@ -735,27 +767,145 @@ double Voltage(double phase);
 ```
 
 * Summary:
-  * 
-* Remarks:
-  * 
+  * the voltage at certain phase.
 * Params:
-  * 
+  * double phase: ${\rm phase} \in [0, 1)$. no exception will be raise if not, but it is still an undifined behavior.
 * Return:
-  * 
+  * double: $f_p(p)=f(p\cdot T)$
 * Normal-Behaviour:
   * Pre-Condition:
-    * 
+    * ${\rm phase} \in [0, 1)$
   * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
+    * return $f_p(p)=f(p\cdot T)$
 * Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+  * Exception null (no Exception will be throw out but this is undefined behavior):
+    * phase \< 0 || phase >= 1
 ---------------------------------------------------------
 
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\Waves"></span>
+
+## Waves
+
+```C#
+public static class Waves
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* supers: none
+* interfaces: none
+* summary:
+  * a static class providing basics operations for IWave.
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |[ConstantWave](#Wave\ConstantWave)|[NONE](#Wave\Waves\NONE)|readonly|GND signal|
+  |int|[UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND)|readonly|time-unit of this classlib is ${1 \over {\rm UNIT\_NUMBER\_PRO\_SECOND}} s$|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [GetFrequence](#Wave\Waves\GetFrequence)(IWave)|get the frequence of certain wave.|
+  |double [CalculateMeanVoltage](#Wave\Waves\CalculateMeanVoltage)(IWave\[, int=1000\])|calculate the mean voltage of certain wave accoding to difination.|
+  |IWave [Add](#Wave\Waves\Add)(IWave,IWave)|add two wave|
+
+### attributes:
+
+
+<span id="Wave\Waves\NONE"></span>
+
+```C#
+public static readonly ConstantWave NONE = new ConstantWave(0);
+```
+
+* Summary:
+  * GND signal
+* readonly
+---------------------------------------------------------
+
+
+<span id="Wave\Waves\UNIT_NUMBER_PRO_SECOND"></span>
+
+```C#
+public static readonly int UNIT_NUMBER_PRO_SECOND = 1000_000;
+```
+
+* Summary:
+  * time-unit of this classlib is ${1 \over {\rm UNIT\_NUMBER\_PRO\_SECOND}} s$
+* Remarks
+  * UNIT_NUMBER_PRO_SECOND = 1000_000 means the time-unit of this classlib is $\mu s$.
+* readonly
+---------------------------------------------------------
+
+
+
+### methods:
+
+
+<span id="Wave\Waves\GetFrequence"></span>
+
+```C#
+public static double GetFrequence(IWave wave);
+```
+
+* Summary:
+  * get the frequence of certain wave.
+* Remarks:
+  * return [UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND) / (double)(wave.Period);
+* Params:
+  * IWave wave: the wave to calculate frequence.
+* Return:
+  * double: the frequence of this wave. frequence-unit is Hz.
+* Normal-Behaviour:
+  * Post-Condition:
+    * return [UNIT_NUMBER_PRO_SECOND](#Wave\Waves\UNIT_NUMBER_PRO_SECOND) / (double)(wave.Period);
+---------------------------------------------------------
+
+
+<span id="Wave\Waves\CalculateMeanVoltage"></span>
+
+```C#
+public static double CalculateMeanVoltage(IWave wave, int calculate_times = 1000);
+```
+
+* Summary:
+  * calculate the mean voltage of certain wave accoding to difination.
+* Remarks:
+  * this function is time-consuming, you'd better use `wave.MeanVoltage` to get the mean-voltage of wave if possible.
+  * this function is mainly used to help the constructor of a wave calculating the mean-voltage. 
+* Params:
+  * [IWave](#Wave\IWave) wave: the wave that need to calculate mean_voltage.
+  * int calculate_times: the bigger calcutate_times, the more precise the result will be, but the more time it will cost.
+* Return:
+  * double :${1 \over calculate\_times}\sum_{i=0}^{\rm calculate\_times} {\rm wave}.{\rm Voltage({i\over {\rm calculate\_times}})}$
+* Normal-Behaviour:
+  * Pre-Condition:
+    * wave can be partly initialized, but make sure wave.[Voltage](#Wave\IWave\Voltage)() can work correctly.
+  * Post-Condition
+    * return ${1 \over calculate\_times}\sum_{i=0}^{\rm calculate\_times} {\rm wave}.{\rm Voltage({i\over {\rm calculate\_times}})}$
+---------------------------------------------------------
+
+
+<span id="Wave\Waves\Add"></span>
+
+```C#
+public static IWave Add(IWave left, IWave right)
+```
+
+* Summary:
+  * add two wave.
+* Remarks:
+  * suggest we discribe left-wave by function $f_1(t)$, and right-wave by function $f_2(t)$, this function will return a new wave discribed by function $f_3(t)=f_1(t) + f_2(t)$.
+  * the Period of the output wave will be the LCM (lowest common multiple) of the Period of each input wave.
+* Params:
+  * [IWave](#Wave\IWave) left: a wave that need to be add.
+  * [IWave](#Wave\IWave) right: a wave that need to be add.
+* Return:
+  * IWave: a wave that observe the rules in Remarks.
+---------------------------------------------------------
 
 
 
@@ -771,8 +921,10 @@ double Voltage(double phase);
 
 <div style="page-break-after: always;"></div>
 
-## Tools
 <span id="Tools"></span>
+
+## Tools
+
 ```C#
 namespace OscilloscopeKernel.Tools
 ```
@@ -807,8 +959,10 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-## Drawing
 <span id="Drawing"></span>
+
+## Drawing
+
 ```C#
 namespace OscilloscopeKernel.Drawing
 ```
@@ -849,8 +1003,10 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-## Producer
 <span id="Producer"></span>
+
+## Producer
+
 ```C#
 namespace OscilloscopeKernel.Producer
 ```
@@ -887,8 +1043,10 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-## Exceptions
 <span id="Exceptions"></span>
+
+## Exceptions
+
 ```C#
 namespace OscilloscopeKernel.Exceptions
 ```
@@ -925,8 +1083,10 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-## OscilloscopeFramework
 <span id="OscilloscopeFramework"></span>
+
+## OscilloscopeFramework
+
 ```C#
 namespace OscilloscopeFramework
 ```
@@ -942,3 +1102,6 @@ Summary:
 ||[](#)||
 ||[](#)||
 ||[](#)||
+
+
+

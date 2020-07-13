@@ -13,8 +13,10 @@ namespace
 
 <div style="page-break-after: always;"></div>
 
-## 
 <span id=""></span>
+
+## 
+
 ```C#
 namespace OscilloscopeKernel
 ```
@@ -46,14 +48,15 @@ class & interface
 
 <div style="page-break-after: always;"></div>
 
-## 
 <span id=""></span>
+
+## 
 
 ```C#
 
 ```
 
-* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[]()
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[](#)
 * supers: none
 * interfaces: none
 * summary:

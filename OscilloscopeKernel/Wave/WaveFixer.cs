@@ -66,4 +66,23 @@ namespace OscilloscopeKernel.Wave
             }
         }
     }
+
+    public class WaveReverser : IWave
+    {
+        public double MeanVoltage => origin.MeanVoltage;
+
+        public int Period => origin.Period;
+
+        private IWave origin;
+
+        public WaveReverser(IWave origin)
+        {
+            this.origin = origin;
+        }
+
+        public double Voltage(double phase)
+        {
+            return origin.Voltage(1 - phase);
+        }
+    }
 }

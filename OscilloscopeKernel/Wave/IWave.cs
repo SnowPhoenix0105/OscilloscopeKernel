@@ -40,7 +40,7 @@ namespace OscilloscopeKernel.Wave
 
         public static double GetFrequence(IWave wave)
         {
-            return 1.0 / (double)(wave.Period);
+            return UNIT_NUMBER_PRO_SECOND / (double)(wave.Period);
         }
 
         public static double CalculateMeanVoltage(IWave wave, int calculate_times = 1000)
