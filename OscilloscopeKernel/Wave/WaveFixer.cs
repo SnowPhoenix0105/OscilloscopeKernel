@@ -38,16 +38,16 @@ namespace OscilloscopeKernel.Wave
             this.wave = wave;
         }
 
-        public IWave GetStateShot()
+        public AbstractWave GetStateShot()
         {
             return new StateShot(this);
         }
 
-        private class StateShot : IWave
+        private class StateShot : AbstractWave
         {
-            public double MeanVoltage => voltage_times * wave.MeanVoltage;
+            public override double MeanVoltage => voltage_times * wave.MeanVoltage;
 
-            public int Period => total_period;
+            public override int Period => total_period;
 
             private double voltage_times;
             private int total_period;
@@ -60,29 +60,10 @@ namespace OscilloscopeKernel.Wave
                 this.wave = fixer.wave;
             }
 
-            public double Voltage(double phase)
+            public override double Voltage(double phase)
             {
                 return voltage_times * wave.Voltage(phase);
             }
-        }
-    }
-
-    public class WaveReverser : IWave
-    {
-        public double MeanVoltage => origin.MeanVoltage;
-
-        public int Period => origin.Period;
-
-        private IWave origin;
-
-        public WaveReverser(IWave origin)
-        {
-            this.origin = origin;
-        }
-
-        public double Voltage(double phase)
-        {
-            return origin.Voltage(1 - phase);
         }
     }
 }

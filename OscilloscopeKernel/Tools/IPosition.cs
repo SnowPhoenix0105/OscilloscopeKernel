@@ -26,7 +26,6 @@ namespace OscilloscopeKernel.Tools
         {
             return (position.Y << 4) ^ position.X;
         }
-
     }
 
     public readonly struct PositionStruct : IPosition
@@ -47,6 +46,11 @@ namespace OscilloscopeKernel.Tools
         {
 			return new Position(x, y);
 		}
+
+        public static explicit operator Position(PositionStruct position_struct)
+        {
+            return new Position(position_struct.x, position_struct.y);
+        }
 
         public override bool Equals(object other)
         {
@@ -88,6 +92,11 @@ namespace OscilloscopeKernel.Tools
         public override string ToString()
         {
             return string.Format("({0}, {1})", x, y);
+        }
+
+        public static explicit operator PositionStruct(Position position)
+        {
+            return new PositionStruct(position.x, position.y);
         }
 
         public override bool Equals(object other)

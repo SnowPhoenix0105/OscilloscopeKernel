@@ -810,7 +810,8 @@ public static class Waves
   |:-|:-|
   |double [GetFrequence](#Wave\Waves\GetFrequence)(IWave)|get the frequence of certain wave.|
   |double [CalculateMeanVoltage](#Wave\Waves\CalculateMeanVoltage)(IWave\[, int=1000\])|calculate the mean voltage of certain wave accoding to difination.|
-  |IWave [Add](#Wave\Waves\Add)(IWave,IWave)|add two wave|
+  |[AbstractWave](#Wave\AbstractWave) [Add](#Wave\Waves\Add)(IWave,IWave)|add two wave|
+  |[AbstractWave](#Wave\AbstractWave) [Reverse](#Wave\Waves\Reverse)(IWave)|reverse the phase of a wave|
 
 ### attributes:
 
@@ -892,7 +893,7 @@ public static double CalculateMeanVoltage(IWave wave, int calculate_times = 1000
 <span id="Wave\Waves\Add"></span>
 
 ```C#
-public static IWave Add(IWave left, IWave right)
+public static AbstractWave Add(IWave left, IWave right);
 ```
 
 * Summary:
@@ -904,7 +905,7 @@ public static IWave Add(IWave left, IWave right)
   * [IWave](#Wave\IWave) left: a wave that need to be add.
   * [IWave](#Wave\IWave) right: a wave that need to be add.
 * Return:
-  * IWave: a wave that observe the rules in Remarks.
+  * [AbstractWave](#Wave\AbstractWave): a wave that observe the rules in Remarks.
 ---------------------------------------------------------
 
 

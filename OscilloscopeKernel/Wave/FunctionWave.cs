@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OscilloscopeKernel.Wave
 {
-    public class FunctionWave : AdditiveWave
+    public class FunctionWave : AbstractWave
     {
         public delegate double WaveFunction(double phase);
 
