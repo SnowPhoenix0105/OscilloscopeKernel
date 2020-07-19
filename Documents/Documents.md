@@ -910,7 +910,7 @@ public static AbstractWave Add(IWave left, IWave right);
 
 
 
-
+ 
 
 
 
