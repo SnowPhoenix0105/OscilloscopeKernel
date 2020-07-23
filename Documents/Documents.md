@@ -1159,14 +1159,18 @@ public class FunctionWave : AbstractWave
 * supers: [Abstractwave](#Wave\AbstractWave)
 * interfaces: [IWave](#Wave\IWave)
 * summary:
-  * create a wave with a $f(t)$.
+  * create a wave with a $f_p(p)$.
 * remarks
-  * use [WaveFunction](#Wave\FunctionWave\)
+  * 
+* delegates:
+  |name|describtion|
+  |:-|:-|
+  |double [WaveFunction](#Wave\FunctionWave\WaveFunction)(double).|describtion of $f_p(p)$|
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[FunctionWave](#Wave\FunctionWave\Constructor1)(WaveFunction, int\[, double=1\])|create a FunctionWave and MeanVoltage will be calculated automatically.|
-  |[FunctionWave](#Wave\FunctionWave\Constructor2)(WaveFunction, int, double, double)|create a FunctionWave, using given MeanVoltage.|
+  |[FunctionWave](#Wave\FunctionWave\Constructor1)([WaveFunction](#Wave\FunctionWave\WaveFunction), int\[, double=1\])|create a FunctionWave and MeanVoltage will be calculated automatically.|
+  |[FunctionWave](#Wave\FunctionWave\Constructor2)([WaveFunction](#Wave\FunctionWave\WaveFunction), int, double, double)|create a FunctionWave, using given MeanVoltage.|
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
@@ -1178,6 +1182,20 @@ public class FunctionWave : AbstractWave
   |double [Voltage](#Wave\FunctionWave\Voltage)(double)|return the voltage of this wave with certain phase|
   |AbstractWave [Reverse](#Wave\FunctionWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
 
+### delegates
+
+<span id="Wave\FunctionWave\WaveFunction"></span>
+
+```C#
+public delegate double WaveFunction(double phase);
+```
+
+* Summary:
+  * describtion of $f_p(p)$
+* Remark:
+  * phase $\in [0, 1)$.
+
+
 ### constructors:
 
 
@@ -1188,54 +1206,34 @@ public FunctionWave(WaveFunction function, int period, double voltage_times = 1)
 ```
 
 * Summary:
-  * 
+  * create a FunctionWave and MeanVoltage will be calculated automatically.
 * Remarks:
-  * 
+  * It may take some time to calculate the mean_voltage. If you want to make it faster, try to use another constructor.
 * Params:
-  * 
-* Return:
-  * 
-* Normal-Behaviour:
-  * Pre-Condition:
-    * 
-  * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
-* Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+  * [WaveFunction](#Wave\FunctionWave\WaveFunction) function: the describtion of $f_p(p)$;
+  * int period: the Period;
+  * double voltage_times: this.Voltage(p) == voltage_times $\cdot$ function(p).
 ---------------------------------------------------------
 
 
 <span id="Wave\FunctionWave\Constructor2"></span>
 
 ```C#
-public FunctionWave(WaveFunction function, int period, double voltage_times, double function_mean)
+public FunctionWave(WaveFunction function, int period, double voltage_times, double function_mean);
 ```
 
 * Summary:
-  * 
+  * Create a FunctionWave, using given MeanVoltage.
 * Remarks:
-  * 
+  * Please make sure function_mean is correct. No check will be provided. function_mean == $\int_0^1 {\rm function}(p){\rm d}p$.
 * Params:
-  * 
-* Return:
-  * 
+  * [WaveFunction](#Wave\FunctionWave\WaveFunction) function: the describtion of $f_p(p)$;
+  * int period: the Period;
+  * double voltage_times: this.Voltage(p) == voltage_times $\cdot$ function(p).
+  * double function_mean: the mean of param function, which means this.MeanVoltage == voltage_times $\cdot$ function_mean.
 * Normal-Behaviour:
   * Pre-Condition:
-    * 
-  * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
-* Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+    * function_mean == $\int_0^1 {\rm function}(p){\rm d}p$.
 ---------------------------------------------------------
 
 
