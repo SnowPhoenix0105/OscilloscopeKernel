@@ -1003,7 +1003,7 @@ public abstract class AbstractWave : IWave
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
-  |abstract double|[MeanVoltage](#Wave\AbstractWaveWave\MeanVoltage)|G|the mean voltage|
+  |abstract double|[MeanVoltage](#Wave\AbstractWave\MeanVoltage)|G|the mean voltage|
   |abstract int|[Period](#Wave\AbstractWave\Period)|G|the period of this wave|
 * methods:
   |name|describtion|
@@ -1020,7 +1020,7 @@ public abstract class AbstractWave : IWave
 ### attributes:
 
 
-<span id="Wave\AbstractWaveWave\MeanVoltage"></span>
+<span id="Wave\AbstractWave\MeanVoltage"></span>
 
 ```C#
 public abstract double MeanVoltage { get; }
@@ -1031,7 +1031,7 @@ public abstract double MeanVoltage { get; }
 ---------------------------------------------------------
 
 
-<span id="Wave\AbstractWaveWave\Period"></span>
+<span id="Wave\AbstractWave\Period"></span>
 
 ```C#
 public abstract int Period { get; }
@@ -1052,7 +1052,7 @@ public abstract double Voltage(double phase);
 ```
 
 * see also:
-  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage).
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
 ---------------------------------------------------------
 
 
@@ -1141,6 +1141,155 @@ public static AbstractWave operator +(IWave left, AbstractWave right);
 * Return:
   * [AbstractWave](#Wave\AbstractWave): a wave that observe the rules in Remarks.
 ---------------------------------------------------------
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\FunctionWave"></span>
+
+## FunctionWave
+
+```C#
+public class FunctionWave : AbstractWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* supers: [Abstractwave](#Wave\AbstractWave)
+* interfaces: [IWave](#Wave\IWave)
+* summary:
+  * create a wave with a $f(t)$.
+* remarks
+  * use [WaveFunction](#Wave\FunctionWave\)
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[FunctionWave](#Wave\FunctionWave\Constructor1)(WaveFunction, int\[, double=1\])|create a FunctionWave and MeanVoltage will be calculated automatically.|
+  |[FunctionWave](#Wave\FunctionWave\Constructor2)(WaveFunction, int, double, double)|create a FunctionWave, using given MeanVoltage.|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#Wave\FunctionWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\FunctionWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#Wave\FunctionWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\FunctionWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+
+### constructors:
+
+
+<span id="Wave\FunctionWave\Constructor1"></span>
+
+```C#
+public FunctionWave(WaveFunction function, int period, double voltage_times = 1);
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
+
+
+<span id="Wave\FunctionWave\Constructor2"></span>
+
+```C#
+public FunctionWave(WaveFunction function, int period, double voltage_times, double function_mean)
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
+
+
+
+### attributes:
+
+
+<span id="Wave\FunctionWave\MeanVoltage"></span>
+
+```C#
+public double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\FunctionWave\Period"></span>
+
+```C#
+public int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+
+<span id="Wave\FunctionWave\Voltage"></span>
+
+```C#
+public double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
+---------------------------------------------------------
+
+
+
+<span id="Wave\FunctionWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse()
+```
+
+* see also:
+  * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
+---------------------------------------------------------
+
 
 
 
