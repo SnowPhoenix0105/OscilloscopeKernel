@@ -676,7 +676,7 @@ Summary:
 |interface|[IWave](#Wave\IWave)|describe a periodic wave with time, phase and voltage.|
 |static class|[Waves](#Wave\Waves)|providing basics operations for IWave.|
 |class|[AbstractWave](#Wave\AbstractWave)|a better [IWave](#Wave\IWave) providing base operations for waves.|
-||[](#)||
+|class|[FunctionWave](#Wave\FunctionWave)|a wave created with a $f_p(p)$.|
 ||[](#)||
 ||[](#)||
 ||[](#)||
@@ -718,18 +718,18 @@ Summary:
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
-  |double|[MeanVoltage](#IWave\MeanVoltage)|G|the mean voltage|
-  |int|[Period](#IWave\Period)|G|the period of this wave|
+  |double|[MeanVoltage](#Wave\IWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\IWave\Period)|G|the period of this wave|
 * methods:
   |name|describtion|
   |:-|:-|
-  |double [Voltage](#IWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |double [Voltage](#Wave\IWave\Voltage)(double)|return the voltage of this wave with certain phase|
 
 
 ### attributes:
 
 
-<span id="IWave\MeanVoltage"></span>
+<span id="Wave\IWave\MeanVoltage"></span>
 
 ```C#
 double MeanVoltage { get; }
@@ -1159,7 +1159,7 @@ public class FunctionWave : AbstractWave
 * supers: [Abstractwave](#Wave\AbstractWave)
 * interfaces: [IWave](#Wave\IWave)
 * summary:
-  * create a wave with a $f_p(p)$.
+  * a wave created with a $f_p(p)$.
 * remarks
   * 
 * delegates:
@@ -1263,7 +1263,6 @@ public int Period { get; }
 ---------------------------------------------------------
 
 ### methods:
-
 
 
 <span id="Wave\FunctionWave\Voltage"></span>
