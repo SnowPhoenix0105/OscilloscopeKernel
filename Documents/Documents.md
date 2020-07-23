@@ -675,7 +675,7 @@ Summary:
 |:-|:-|:-|
 |interface|[IWave](#Wave\IWave)|describe a periodic wave with time, phase and voltage.|
 |static class|[Waves](#Wave\Waves)|providing basics operations for IWave.|
-||[](#)||
+|class|[AbstractWave](#Wave\AbstractWave)|a better [IWave](#Wave\IWave) providing base operations for waves.|
 ||[](#)||
 ||[](#)||
 ||[](#)||
@@ -810,8 +810,10 @@ public static class Waves
   |:-|:-|
   |double [GetFrequence](#Wave\Waves\GetFrequence)(IWave)|get the frequence of certain wave.|
   |double [CalculateMeanVoltage](#Wave\Waves\CalculateMeanVoltage)(IWave\[, int=1000\])|calculate the mean voltage of certain wave accoding to difination.|
-  |[AbstractWave](#Wave\AbstractWave) [Add](#Wave\Waves\Add)(IWave,IWave)|add two wave|
-  |[AbstractWave](#Wave\AbstractWave) [Reverse](#Wave\Waves\Reverse)(IWave)|reverse the phase of a wave|
+  |[AbstractWave](#Wave\AbstractWave) [Add](#Wave\Waves\Add)(IWave,IWave)|add two wave, $g(t) = f_1(t) + f_2(t)$|
+  |[AbstractWave](#Wave\AbstractWave) [Negative](#Wave\Waves\Negative)(IWave)|return a wave $g(t) = -f(t)$|
+  |[AbstractWave](#Wave\AbstractWave) [Reverse](#Wave\Waves\Reverse)(IWave)|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+  |[AbstractWave](#Wave\AbstractWave) [Decorate](#Wave\Waves\Decorate)(IWave)|decorate a [IWave](#Wave\IWave) as an [AbstractWave](#Wave\AbstractWave)|
 
 ### attributes:
 
@@ -897,7 +899,7 @@ public static AbstractWave Add(IWave left, IWave right);
 ```
 
 * Summary:
-  * add two wave.
+  * add two wave, $g(t) = f_1(t) + f_2(t)$.
 * Remarks:
   * suggest we discribe left-wave by function $f_1(t)$, and right-wave by function $f_2(t)$, this function will return a new wave discribed by function $f_3(t)=f_1(t) + f_2(t)$.
   * the Period of the output wave will be the LCM (lowest common multiple) of the Period of each input wave.
@@ -907,6 +909,247 @@ public static AbstractWave Add(IWave left, IWave right);
 * Return:
   * [AbstractWave](#Wave\AbstractWave): a wave that observe the rules in Remarks.
 ---------------------------------------------------------
+
+
+<span id="Wave\Waves\Negative"></span>
+
+```C#
+public static AbstractWave Negative(IWave origin);
+```
+
+* Summary:
+  * return a wave $g(t) = -f(t)$.
+* Params:
+  * [IWave](#Wave\IWave) origin: origin wave;
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new AbstractWave;
+* Normal-Behaviour:
+  * Pre-Condition:
+    * origin is an `immutable` object;
+  * Post-Condition:
+    * return AbstractWave new_wave;
+    * new_wave.MeanVoltage + origin.MeanVoltage == 0;
+    * new_wave.Period == origin.Period;
+    * $\forall$ double p $\in [0, 1)$, new_wave.Voltage(p) + origin.Voltage(p) == 0;
+---------------------------------------------------------
+
+
+<span id="Wave\Waves\Reverse"></span>
+
+```C#
+public static AbstractWave Reverse(IWave origin);
+```
+
+* Summary:
+  * reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$
+* Params:
+  * [IWave](#Wave\IWave) origin: origin wave;
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new AbstractWave;
+* Normal-Behaviour:
+  * Pre-Condition:
+    * origin is an `immutable` object;
+  * Post-Condition:
+    * return AbstractWave new_wave;
+    * new_wave.MeanVoltage == origin.MeanVoltage;
+    * new_wave.Period == origin.Period;
+    * $\forall$ double p $\in [0, 1)$, new_wave.Voltage(p) == origin.Voltage(1 - p);
+---------------------------------------------------------
+
+
+<span id="Wave\Waves\Decorate"></span>
+
+```C#
+public static AbstractWave Decorate(IWave origin);
+```
+
+* Summary:
+  * decorate a [IWave](#Wave\IWave) as an [AbstractWave](#Wave\AbstractWave)
+* Params:
+  * [IWave](#Wave\IWave) origin: origin wave;
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new AbstractWave;
+* Normal-Behaviour:
+  * Pre-Condition:
+    * origin is an `immutable` object;
+  * Post-Condition:
+    * return AbstractWave new_wave;
+    * new_wave.MeanVoltage == origin.MeanVoltage;
+    * new_wave.Period == origin.Period;
+    * $\forall$ double p $\in [0, 1)$, new_wave.Voltage(p) == origin.Voltage(p);
+---------------------------------------------------------
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\AbstractWave"></span>
+
+## AbstractWave
+
+```C#
+public abstract class AbstractWave : IWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* supers: none
+* interfaces: [IWave](Wave\IWave)
+* summary:
+  * a better [IWave](#Wave\IWave) providing base operations for waves.
+* remarks
+  * Each `AbstractWave` should be an immutable object.
+  * There is no fields in this class, so there is only default constructor.
+  * The only reason why this class is designed is that, in .NET Standard 2.0, I cannot use C# 8.0, so I cannot add those operations to IWave derectly.
+  * operator suntraction of 2 element is not provided, you can use `wave1 + (-wave2)` instead of `wave1 - wave2`, the latter is wrong.
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |abstract double|[MeanVoltage](#Wave\AbstractWaveWave\MeanVoltage)|G|the mean voltage|
+  |abstract int|[Period](#Wave\AbstractWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |abstract double [Voltage](#Wave\AbstractWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\AbstractWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+* operators:
+  |name|describtion|
+  |:-|:-|
+  |AbstractWave [Subtraction](#Wave\AbstractWave\Subtraction)(AbstractWave)|return a wave $g(t) = -f(t)$|
+  |AbstractWave [Addition](#Wave\AbstractWave\Addition1)(AbstractWave, IWave)|add two wave, $g(t) = f_1(t) + f_2(t)$|
+  |AbstractWave [Addition](#Wave\AbstractWave\Addition2)(IWave, AbstractWave)|add two wave, $g(t) = f_1(t) + f_2(t)$|
+
+### attributes:
+
+
+<span id="Wave\AbstractWaveWave\MeanVoltage"></span>
+
+```C#
+public abstract double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\AbstractWaveWave\Period"></span>
+
+```C#
+public abstract int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+
+<span id="Wave\AbstractWave\Voltage"></span>
+
+```C#
+public abstract double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage).
+---------------------------------------------------------
+
+
+<span id="Wave\AbstractWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse();
+```
+
+* Summary:
+  * reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$
+* Remarks:
+  * it behave the same as [Waves](#Wave\Waves).[Reverse](#Wave\Waves\Reverse)(this).
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new AbstractWave;
+* Normal-Behaviour:
+  * Post-Condition:
+    * return AbstractWave new_wave;
+    * new_wave.MeanVoltage == this.MeanVoltage
+    * new_wave.Period == this.Period;
+    * $\forall$ double p $\in [0, 1)$, new_wave.Voltage(p) == this.Voltage(1 - p);
+---------------------------------------------------------
+
+
+### operators:
+
+
+<span id="Wave\AbstractWave\Subtraction"></span>
+
+```C#
+public static AbstractWave operator -(AbstractWave origin);
+```
+
+* Summary:
+  * return a wave $g(t) = -f(t)$.
+* Remarks:
+  * it behave the save as [Waves](#Wave\Waves).[Negative](#Wave\Waves\Negative)(this).
+* Params:
+  * [IWave](#Wave\IWave) origin: origin wave;
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new AbstractWave;
+* Normal-Behaviour:
+  * Post-Condition:
+    * return AbstractWave new_wave;
+    * new_wave.MeanVoltage + origin.MeanVoltage == 0;
+    * new_wave.Period == origin.Period;
+    * $\forall$ double p $\in [0, 1)$, new_wave.Voltage(p) + origin.Voltage(p) == 0;
+---------------------------------------------------------
+
+
+<span id="Wave\AbstractWave\Addition1"></span>
+
+```C#
+public static AbstractWave operator +(AbstractWave left, IWave right);
+```
+
+* Summary:
+  * add two wave, $g(t) = f_1(t) + f_2(t)$.
+* Remarks:
+  * it behave the save as [Waves](#Wave\Waves).[Add](#Wave\Waves\Add)(left, right).
+  * suggest we discribe left-wave by function $f_1(t)$, and right-wave by function $f_2(t)$, this function will return a new wave discribed by function $f_3(t)=f_1(t) + f_2(t)$.
+  * the Period of the output wave will be the LCM (lowest common multiple) of the Period of each input wave.
+* Params:
+  * [AbstractWave](#Wave\IWave) left: a wave that need to be add.
+  * [IWave](#Wave\IWave) right: a wave that need to be add.
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a wave that observe the rules in Remarks.
+---------------------------------------------------------
+
+
+<span id="Wave\AbstractWave\Addition2"></span>
+
+```C#
+public static AbstractWave operator +(IWave left, AbstractWave right);
+```
+
+* Summary:
+  * add two wave, $g(t) = f_1(t) + f_2(t)$.
+* Remarks:
+  * it behave the save as [Waves](#Wave\Waves).[Add](#Wave\Waves\Add)(left, right).
+  * suggest we discribe left-wave by function $f_1(t)$, and right-wave by function $f_2(t)$, this function will return a new wave discribed by function $f_3(t)=f_1(t) + f_2(t)$.
+  * the Period of the output wave will be the LCM (lowest common multiple) of the Period of each input wave.
+* Params:
+  * [IWave](#Wave\IWave) left: a wave that need to be add.
+  * [AbstractWave](#Wave\IWave) right: a wave that need to be add.
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a wave that observe the rules in Remarks.
+---------------------------------------------------------
+
+
+
+
+
+
+
+
+
 
 
 
