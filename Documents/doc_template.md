@@ -57,7 +57,7 @@ class & interface
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[](#)
-* supers: none
+* inheritance: Object $\rarr$ 
 * interfaces: none
 * summary:
   * 

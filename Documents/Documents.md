@@ -78,7 +78,7 @@ public abstract class SingleThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: none
+* inheritance: Object $\rarr$ SingleThreadOscilloscope\<T\>
 * interfaces: none
 * summary:
   * an oscilloscope that cannot start a new draw-task while the old one has not finished.
@@ -165,7 +165,7 @@ public class SimpleOscilloscope<T> : SingleThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+* inheritance: Object $\rarr$ [SingleThreadOscilloscope](#SingleThreadOscilloscope)\<T\> $\rarr$ SimpleOscilloscope\<T\>
 * interfaces: none
 * summary:
   * the only difference with [SingleThreadOscilloscope](#SingleThreadOscilloscope) is the method [Draw](#SimpleOscilloscope\Draw)() is puiblic.
@@ -249,7 +249,7 @@ public class TimeCountedOscilloscope<T> : SingleThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: [SingleThreadOscilloscope](#SingleThreadOscilloscope)
+* inheritance: Object $\rarr$ [SingleThreadOscilloscope](#SingleThreadOscilloscope)\<T\> $\rarr$ TimeCountedOscilloscope\<T\>
 * interfaces: none
 * summary:
   * the only difference with [SimpleOscilloscope](#SimpleOscilloscope) is the method [Draw](#TimeCountedOscilloscope\Draw)() will use a built-in watch to get delta-time.
@@ -331,7 +331,7 @@ public abstract class MultiThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: none
+* inheritance: Object $\rarr$ MultiThreadOscilloscope\<T\>
 * interfaces: none
 * summary:
   * an oscilloscope that can start a new draw-task while the old one has not finished.
@@ -436,7 +436,7 @@ public class UndrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: MultiThreadOscilloscope\<T\>
+* inheritance: Object $\rarr$ [MultiThreadOscilloscope](#MultiThreadOscilloscope)\<T\> $\rarr$ UndrivedOscilloscope\<T\>
 * interfaces: none
 * summary:
   * the only difference with [MultiThreadOscilloscope](#MultiThreadOscilloscope) is that the [Draw](#MultiThreadOscilloscope\Draw)() of [UndrivedOscilloscope](#UndrivedOscilloscope) is public.
@@ -522,7 +522,7 @@ public class DrivedOscilloscope<T> : MultiThreadOscilloscope<T>;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel)
-* supers: MultiThreadOscilloscope\<T\>
+* inheritance: Object $\rarr$ [MultiThreadOscilloscope](#MultiThreadOscilloscope)\<T\> $\rarr$ DrivedOscilloscope\<T\>
 * interfaces: none
 * summary:
   * a multi-thread oscilloscope that contains a built-in timer.
@@ -675,14 +675,13 @@ Summary:
 |:-|:-|:-|
 |interface|[IWave](#Wave\IWave)|describe a periodic wave with time, phase and voltage.|
 |static class|[Waves](#Wave\Waves)|providing basics operations for IWave.|
-|class|[AbstractWave](#Wave\AbstractWave)|a better [IWave](#Wave\IWave) providing base operations for waves.|
+|abstract class|[AbstractWave](#Wave\AbstractWave)|a better [IWave](#Wave\IWave) providing base operations for waves.|
 |class|[FunctionWave](#Wave\FunctionWave)|a wave created with a $f_p(p)$.|
-||[](#)||
-||[](#)||
-||[](#)||
-||[](#)||
-||[](#)||
-||[](#)||
+|class|[SinWave](#Wave\SinWave)|a wave described as $f_p(p)$ = max_voltage $\cdot \sin(2 \pi p)$.|
+|class|[SawToothWave](#Wave\SawToothWave)|a wave described as $f_p(p)$ = max_voltage $\cdot(2p - 1)$.|
+|class|[SquareWave](#Wave\SquareWave)|a wave described as $f_p(p)$ = max_voltage $\cdot$ (p \< $1 \over 2$ ? -max_voltage : max_voltage)|
+|class|[ConstantWave](#Wave\ConstantWave)|a wave described as $f_p(p)$ = voltage. A DC wave.|
+|class|[WaveFixer](#Wave\WaveFixer)|a mutable wave.|
 
 
 
@@ -706,7 +705,6 @@ Summary:
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
-* supers: none
 * interfaces: none
 * summary:
   * describe a periodic wave with time, phase and voltage.
@@ -796,7 +794,7 @@ public static class Waves
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
-* supers: none
+* inheritance: Object $\rarr$ Waves
 * interfaces: none
 * summary:
   * a static class providing basics operations for IWave.
@@ -991,7 +989,7 @@ public abstract class AbstractWave : IWave
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
-* supers: none
+* inheritance: Object $\rarr$ AbstractWave
 * interfaces: [IWave](Wave\IWave)
 * summary:
   * a better [IWave](#Wave\IWave) providing base operations for waves.
@@ -1156,7 +1154,7 @@ public class FunctionWave : AbstractWave
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
-* supers: [Abstractwave](#Wave\AbstractWave)
+* inheritance: Object $\rarr$ [Abstractwave](#Wave\AbstractWave) $\rarr$ FunctionWave
 * interfaces: [IWave](#Wave\IWave)
 * summary:
   * a wave created with a $f_p(p)$.
@@ -1286,6 +1284,547 @@ public AbstractWave Reverse()
 * see also:
   * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
 ---------------------------------------------------------
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\SinWave"></span>
+
+## SinWave
+
+```C#
+public class SinWave : FunctionWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* inheritance: Object $\rarr$ [Abstractwave](#Wave\AbstractWave) $\rarr$ [FinctionWave](#Wave\FunctionWave) $\rarr$ SinWave
+* interfaces: [IWave](#Wave\IWave)
+* summary:
+  * a wave described as $f_p(p)$ = max_voltage $\cdot \sin(2 \pi p)$
+* remarks
+  * just like [FunctionWave](#Wave\FunctionWave)(phase => Math.Sin(2 * Math.PI * phase), period, max_voltage, 0);
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SinWave](#Wave\SinWave\Constructor1)(int, double)|create a sin-wave with given period and max_voltage|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#Wave\SinWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\SinWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#Wave\SinWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\SinWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+
+### constructors:
+
+
+<span id="Wave\SinWave\Constructor1"></span>
+
+```C#
+public SinWave(int period, double max_voltage);
+```
+
+* Summary:
+  * create a sin-wave with given period and max_voltage.
+* Params:
+  * int period: the Period of this wave.
+  * double max_voltage: the max voltage of this wave. In other way, $f_p({1 \over 4})=$ max_voltage.
+---------------------------------------------------------
+
+### attributes:
+
+
+<span id="Wave\SinWave\MeanVoltage"></span>
+
+```C#
+public double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\SinWave\Period"></span>
+
+```C#
+public int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+<span id="Wave\SinWave\Voltage"></span>
+
+```C#
+public double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
+---------------------------------------------------------
+
+
+
+<span id="Wave\SinWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse()
+```
+
+* see also:
+  * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
+---------------------------------------------------------
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\SawToothWave"></span>
+
+## SawToothWave
+
+```C#
+public class SawToothWave : FunctionWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* inheritance: Object $\rarr$ [Abstractwave](#Wave\AbstractWave) $\rarr$ [FinctionWave](#Wave\FunctionWave) $\rarr$ SawToothWave
+* interfaces: [IWave](#Wave\IWave)
+* summary:
+  * a wave described as $f_p(p)$ = max_voltage $\cdot(2p - 1)$.
+* remarks
+  * just like [FunctionWave](#Wave\FunctionWave)(phase => 2 * phase - 1, period, max_voltage, 0);
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SawToothWave](#Wave\SawToothWave\Constructor1)(int, double)|create a sin-wave with given period and max_voltage|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#Wave\SawToothWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\SawToothWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#Wave\SawToothWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\SawToothWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+
+### constructors:
+
+
+<span id="Wave\SawToothWave\Constructor1"></span>
+
+```C#
+public SawToothWave(int period, double max_voltage);
+```
+
+* Summary:
+  * create a sin-wave with given period and max_voltage.
+* Params:
+  * int period: the Period of this wave.
+  * double max_voltage: the max voltage of this wave. In other way, $\forall p \in [0, 1), f_p(p)=$ max_voltage $\cdot(2p - 1)$.
+---------------------------------------------------------
+
+### attributes:
+
+
+<span id="Wave\SawToothWave\MeanVoltage"></span>
+
+```C#
+public double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\SawToothWave\Period"></span>
+
+```C#
+public int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+<span id="Wave\SawToothWave\Voltage"></span>
+
+```C#
+public double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
+---------------------------------------------------------
+
+
+
+<span id="Wave\SawToothWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse()
+```
+
+* see also:
+  * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
+---------------------------------------------------------
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\SquareWave"></span>
+
+## SquareWave
+
+```C#
+public class SquareWave : FunctionWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* inheritance: Object $\rarr$ [Abstractwave](#Wave\AbstractWave) $\rarr$ [FinctionWave](#Wave\FunctionWave) $\rarr$ SquareWave
+* interfaces: [IWave](#Wave\IWave)
+* summary:
+  * a wave described as $f_p(p)$ = max_voltage $\cdot$ (p \< $1 \over 2$ ? -max_voltage : max_voltage)
+* remarks
+  * just like [FunctionWave](#Wave\FunctionWave)(phase => phase < 0.5 ? -1 : 1, period, max_voltage, 0);
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[SquareWave](#Wave\SquareWave\Constructor1)(int, double)|create a sin-wave with given period and max_voltage|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#Wave\SquareWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\SquareWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#Wave\SquareWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\SquareWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+
+### constructors:
+
+
+<span id="Wave\SquareWave\Constructor1"></span>
+
+```C#
+public SquareWave(int period, double max_voltage);
+```
+
+* Summary:
+  * create a sin-wave with given period and max_voltage.
+* Params:
+  * int period: the Period of this wave.
+  * double max_voltage: the max voltage of this wave. In other way, $\forall p \in [0, {1\over 2}), f_p(p)=$ -max_voltage, $\forall p \in [{1\over 2}, 1), f_p(p)=$ max_voltage.
+---------------------------------------------------------
+
+### attributes:
+
+
+<span id="Wave\SquareWave\MeanVoltage"></span>
+
+```C#
+public double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\SquareWave\Period"></span>
+
+```C#
+public int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+<span id="Wave\SquareWave\Voltage"></span>
+
+```C#
+public double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
+---------------------------------------------------------
+
+
+
+<span id="Wave\SquareWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse()
+```
+
+* see also:
+  * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
+---------------------------------------------------------
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\ConstantWave"></span>
+
+## ConstantWave
+
+```C#
+public class ConstantWave : AbstractWave
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[Wave](#Wave)
+* inheritance: Object $\rarr$ [Abstractwave](#Wave\AbstractWave) $\rarr$ ConstantWave
+* interfaces: [IWave](#Wave\IWave)
+* summary:
+  * a wave described as $f_p(p)$ = voltage.
+  * In other way, it is a DC wave.
+* remarks
+  * just like [FunctionWave](#Wave\FunctionWave)(phase => 1, 1, voltage, voltage);
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[ConstantWave](#Wave\ConstantWave\Constructor1)(double)|create a DC-wave with given voltage|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[MeanVoltage](#Wave\ConstantWave\MeanVoltage)|G|the mean voltage|
+  |int|[Period](#Wave\ConstantWave\Period)|G|the period of this wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |double [Voltage](#Wave\ConstantWave\Voltage)(double)|return the voltage of this wave with certain phase|
+  |AbstractWave [Reverse](#Wave\ConstantWave\Reverse)()|reverse the phase of a wave, $g(t) = g_p({t \over T} {\rm mod}$ $1) = f_p(1 - ({t \over T} {\rm mod}$ $1)) = f(T - t)$|
+
+### constructors:
+
+
+<span id="Wave\ConstantWave\Constructor1"></span>
+
+```C#
+public ConstantWave(int period, double max_voltage);
+```
+
+* Summary:
+  * create a DC-wave with given voltage.
+* Params:
+  * double voltage: the voltage of this wave. In other way, $\forall p \in [0, 1), f_p(p)=$ voltage.
+---------------------------------------------------------
+
+### attributes:
+
+
+<span id="Wave\ConstantWave\MeanVoltage"></span>
+
+```C#
+public double MeanVoltage { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[MeanVoltage](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+
+<span id="Wave\ConstantWave\Period"></span>
+
+```C#
+public int Period { get; }
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Period](#Wave\IWave\MeanVoltage).
+---------------------------------------------------------
+
+### methods:
+
+
+<span id="Wave\ConstantWave\Voltage"></span>
+
+```C#
+public double Voltage(double phase);
+```
+
+* see also:
+  * [Wave](#Wave).[IWave](#Wave\IWave).[Voltage](#Wave\IWave\Voltage)().
+---------------------------------------------------------
+
+
+
+<span id="Wave\ConstantWave\Reverse"></span>
+
+```C#
+public AbstractWave Reverse()
+```
+
+* see also:
+  * [Wave](#Wave).[AbstractWave](#Wave\AbstractWave).[Reverse](#Wave\AbstractWave\Reverse)().
+---------------------------------------------------------
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id="Wave\WaveFixer"></span>
+
+## WaveFixer
+
+```C#
+public class WaveFixer
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[](#)
+* inheritance: Object $\rarr$ WaveFixer
+* interfaces: none
+* summary:
+  * a mutable wave.
+* remarks
+  * use [GetStateShot](#Wave\WaveFixer\GetStateShot)() to get an [AbstractWave](#Wave\AbstractWave) as the shot of fixed wave now.
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[WaveFixer](#Wave\WaveFixer\Constructor1)()|create a WaveFixer with GND wave|
+  |[WaveFixer](#Wave\WaveFixer\Constructor2)([IWave](#Wave\IWave))|create a WaveFixer with given wave|
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  |double|[VoltageTimes](#Wave\WaveFixer\VoltageTimes)|GS|the times of voltage|
+  |double|[PeriodTimes](#Wave\WaveFixer\PeriodTimes)|GS|the times of period|
+  |[IWave](#Wave\IWave)|[Wave](#Wave\WaveFixer\Wave)|GS|the base wave|
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |[AbstractWave](Wave\AbstractWave) [GetStateShot](#Wave\WaveFixer\GetStateShot)()|get the shot of the fixed wave now|
+
+### constructors:
+
+
+<span id="Wave\WaveFixer\Constructor1"></span>
+
+```C#
+public WaveFixer();
+```
+
+* Summary:
+  * create a WaveFixer with GND wave. 
+* Remarks:
+  * the same as [WaveFixer](#Wave\WaveFixer\Constructor2)([Waves](#Wave\Waves).[NONE](#Wave\Waves\NONE)).
+---------------------------------------------------------
+
+
+<span id="Wave\WaveFixer\Constructor2"></span>
+
+```C#
+public WaveFixer(IWave wave);
+```
+
+* Summary:
+  * create a WaveFixer with given wave
+* Params:
+  * [IWave](#Wave\IWave) wave: given wave that this WaveFixer will use.
+---------------------------------------------------------
+
+### attributes:
+
+
+<span id="Wave\WaveFixer\VoltageTimes"></span>
+
+```C#
+public double VoltageTimes { get; set; }
+```
+
+* Summary:
+  * the Voltage of fixed wave at phase p is Wave.Voltage(p) $\cdot$ VoltageTimes.
+* Invarient:
+  * $\forall p \in [0, 1)$, [GetStateShot](#Wave\WaveFixer\GetStateShot)().Voltage(p) == Wave.Period * VoltageTimes.
+* Getter
+* Setter
+---------------------------------------------------------
+
+
+<span id="Wave\WaveFixer\PeriodTimes"></span>
+
+```C#
+public double PeriodTimes { get; set; }
+```
+
+* Summary:
+  * the Period of fixed wave is (int)(Wave.Period $\cdot$ PeriodTimes).
+* Invarient:
+  * [GetStateShot](#Wave\WaveFixer\GetStateShot)().Period == (int)(Wave.Period * PeriodTimes)
+* Getter
+* Setter
+---------------------------------------------------------
+
+
+<span id="Wave\WaveFixer\Wave"></span>
+
+```C#
+public IWave Wave { get; set; }
+```
+
+* Summary:
+  * the base wave.
+* Invarient:
+  * [GetStateShot](#Wave\WaveFixer\GetStateShot)().Period == (int)(Wave.Period * PeriodTimes)
+  * $\forall p \in [0, 1)$, [GetStateShot](#Wave\WaveFixer\GetStateShot)().Voltage(p) == Wave.Period * VoltageTimes.
+* Getter
+* Setter:
+  * if value is null, Wave will be set to [Waves](#Wave\Waves).[NONE](#Wave\Waves\NONE).
+---------------------------------------------------------
+
+### methods:
+
+
+
+<span id="Wave\WaveFixer\GetStateShot"></span>
+
+```C#
+public AbstractWave GetStateShot();
+```
+
+* Summary:
+  * get the shot of the fixed wave now.
+* Return:
+  * [AbstractWave](#Wave\AbstractWave): a new wave that can describe the wave now.
+* Normal-Behaviour:
+  * Post-Condition:
+    * AbstractWave new_wave;
+    * new_wave.Period == (int)(Wave.Period * PeriodTimes)
+    * $\forall p \in [0, 1)$, new_wave.Voltage(p) == Wave.Period * VoltageTimes.
+    * return new_wave.
+---------------------------------------------------------
+
+
+
 
 
 

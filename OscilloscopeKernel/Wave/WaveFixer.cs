@@ -21,7 +21,10 @@ namespace OscilloscopeKernel.Wave
         public IWave Wave
         {
             get => wave;
-            set => wave = value;
+            set
+            {
+                wave = value == null ? Waves.NONE : value;
+            }
         }
 
         private double voltage_times = 1;
