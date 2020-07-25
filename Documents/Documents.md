@@ -1826,18 +1826,6 @@ public AbstractWave GetStateShot();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
  
 
 
@@ -1869,6 +1857,101 @@ Summary:
 ||[](#)||
 ||[](#)||
 ||[](#)||
+
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+
+<span id=""></span>
+
+## SizeStruct
+
+```C#
+
+```
+
+* namespace: [OscilloscopeKernel](#OscilloscopeKernel).[](#)
+* inheritance: Object $\rarr$ 
+* interfaces: none
+* summary:
+  * 
+* remarks
+  * 
+* constructors:
+  |name|describtion|
+  |:-|:-|
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+* attributes:
+  |type|name|accessor|describtion|
+  |:-|:-|:-|:-|
+  ||[](#)|||
+  ||[](#)|||
+  ||[](#)|||
+  ||[](#)|||
+  ||[](#)|||
+  ||[](#)|||
+  ||[](#)|||
+* methods:
+  |name|describtion|
+  |:-|:-|
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+* operators:
+  |name|describtion|
+  |:-|:-|
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+  |[](#)()||
+
+### constructors:
+
+### attributes:
+
+### methods:
+
+### operators:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
