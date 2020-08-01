@@ -1851,7 +1851,7 @@ Summary:
 
 |type|name|description|
 |:-|:-|:-|
-||[](#)||
+|readonly struct|[SizeStruct](#Tools/SizeStruct)|a struct to describe a size of something.|
 ||[](#)||
 ||[](#)||
 ||[](#)||
@@ -1865,40 +1865,30 @@ Summary:
 
 <div style="page-break-after: always;"></div>
 
-<span id=""></span>
+<span id="#Tools/SizeStruct"></span>
 
 ## SizeStruct
 
 ```C#
-
+public readonly struct SizeStruct;
 ```
 
 * namespace: [OscilloscopeKernel](#OscilloscopeKernel).[](#)
-* inheritance: Object $\rarr$ 
+* inheritance: none
 * interfaces: none
 * summary:
-  * 
+  * a struct to describe a size of something.
 * remarks
-  * 
+  * it is a readonly stract, every attribute of it is unchangable.
 * constructors:
   |name|describtion|
   |:-|:-|
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
+  |[SizeStruct](#Tools\SizeStruct\Constructor1)(int, int)|create a SizeStruct with given length and width.|
 * attributes:
   |type|name|accessor|describtion|
   |:-|:-|:-|:-|
-  ||[](#)|||
-  ||[](#)|||
-  ||[](#)|||
-  ||[](#)|||
-  ||[](#)|||
-  ||[](#)|||
-  ||[](#)|||
+  |int|[Length](#Tools\SizeStruct\Length)|G|the length.|
+  |int|[Width](#Tools\SizeStruct\Width)|G|the width.|
 * methods:
   |name|describtion|
   |:-|:-|
@@ -1911,8 +1901,8 @@ Summary:
 * operators:
   |name|describtion|
   |:-|:-|
-  |[](#)()||
-  |[](#)()||
+  |[Euqal](#Tools\SizeStruct\Equal)(SizeStruct, SizeStruct)||
+  |[NotQueal](#Tools\SizeStruct\NotEqual)(SizeStruct, SizeStruct)||
   |[](#)()||
   |[](#)()||
   |[](#)()||
