@@ -1889,32 +1889,140 @@ public readonly struct SizeStruct;
   |:-|:-|:-|:-|
   |int|[Length](#Tools\SizeStruct\Length)|G|the length.|
   |int|[Width](#Tools\SizeStruct\Width)|G|the width.|
-* methods:
-  |name|describtion|
-  |:-|:-|
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
 * operators:
   |name|describtion|
   |:-|:-|
   |[Euqal](#Tools\SizeStruct\Equal)(SizeStruct, SizeStruct)||
   |[NotQueal](#Tools\SizeStruct\NotEqual)(SizeStruct, SizeStruct)||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
-  |[](#)()||
 
 ### constructors:
 
+
+<span id="Tools\SizeStruct\Constructor1"></span>
+
+```C#
+public SizeStruct(int length, int width);
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
+
 ### attributes:
 
-### methods:
+
+<span id="Tools\SizeStruct\Length"></span>
+
+```C#
+public int Length { get; }
+```
+
+* Summary:
+  * 
+* Remarks
+  * 
+* Invarient:
+* Getter:
+  * 
+* Setter:
+  * 
+---------------------------------------------------------
+
+
+<span id="Tools\SizeStruct\Width"></span>
+
+```C#
+public int Width { get; }
+```
+
+* Summary:
+  * 
+* Remarks
+  * 
+* Invarient:
+* Getter:
+  * 
+* Setter:
+  * 
+---------------------------------------------------------
 
 ### operators:
+
+
+<span id="Tools\SizeStruct\Equal"></span>
+
+```C#
+public static bool operator ==(SizeStruct left, SizeStruct right);
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
+
+
+<span id="Tools\SizeStruct\NotEqual"></span>
+
+```C#
+public static bool operator !=(SizeStruct left, SizeStruct right);
+```
+
+* Summary:
+  * 
+* Remarks:
+  * 
+* Params:
+  * 
+* Return:
+  * 
+* Normal-Behaviour:
+  * Pre-Condition:
+    * 
+  * Post-Condition:
+    * 
+  * Side-Effect:
+    * 
+* Exception-Behaviour:
+  * Exception:
+    * 
+  * Exception:
+    * 
+---------------------------------------------------------
 
 
 
