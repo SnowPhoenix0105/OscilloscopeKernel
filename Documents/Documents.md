@@ -1905,25 +1905,14 @@ public SizeStruct(int length, int width);
 ```
 
 * Summary:
-  * 
-* Remarks:
-  * 
+  * create a struct to describe a 2D size with length and width.
 * Params:
-  * 
-* Return:
-  * 
+  * int length: the length.
+  * int width: the width.
 * Normal-Behaviour:
-  * Pre-Condition:
-    * 
   * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
-* Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+    * Width == width.
+    * Length == length.
 ---------------------------------------------------------
 
 ### attributes:
@@ -1935,15 +1924,7 @@ public SizeStruct(int length, int width);
 public int Length { get; }
 ```
 
-* Summary:
-  * 
-* Remarks
-  * 
-* Invarient:
 * Getter:
-  * 
-* Setter:
-  * 
 ---------------------------------------------------------
 
 
@@ -1953,15 +1934,7 @@ public int Length { get; }
 public int Width { get; }
 ```
 
-* Summary:
-  * 
-* Remarks
-  * 
-* Invarient:
 * Getter:
-  * 
-* Setter:
-  * 
 ---------------------------------------------------------
 
 ### operators:
@@ -1974,25 +1947,16 @@ public static bool operator ==(SizeStruct left, SizeStruct right);
 ```
 
 * Summary:
-  * 
-* Remarks:
-  * 
+  * compare 2 SizeStruct, return true only if both Width and Length of the two SizeStruct are the same.
 * Params:
-  * 
+  * SizeStruct left: a SizeStruct need to be compared.
+  * SizeStruct right: a SizeStruct need to be compared.
 * Return:
-  * 
+  * bool: (left.Length == right.Length) && (left.Width == right.Width)
 * Normal-Behaviour:
-  * Pre-Condition:
-    * 
   * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
-* Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+    * \result == (left.Length == right.Length) && (left.Width == right.Width)
+    * SizeStruct A,B,C, A==B && B==C => A==C
 ---------------------------------------------------------
 
 
@@ -2003,25 +1967,16 @@ public static bool operator !=(SizeStruct left, SizeStruct right);
 ```
 
 * Summary:
-  * 
-* Remarks:
-  * 
+  * compare 2 SizeStruct, return true if any Width or Length of the two SizeStruct are the same.
 * Params:
-  * 
+  * SizeStruct left: a SizeStruct need to be compared.
+  * SizeStruct right: a SizeStruct need to be compared.
 * Return:
-  * 
+  * bool: (left.Length != right.Length) || (left.Width != right.Width);
 * Normal-Behaviour:
-  * Pre-Condition:
-    * 
   * Post-Condition:
-    * 
-  * Side-Effect:
-    * 
-* Exception-Behaviour:
-  * Exception:
-    * 
-  * Exception:
-    * 
+    * \result == (left.Length == right.Length) && (left.Width == right.Width)
+    * SizeStruct A,B, (A!=B) == !(A==B)
 ---------------------------------------------------------
 
 
